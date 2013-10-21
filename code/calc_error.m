@@ -1,7 +1,6 @@
-function [ output_args ] = calc_error( input_args )
-%CALC_ERROR Summary of this function goes here
-%   Detailed explanation goes here
+function [ error ] = calc_error( x, y, w )
 
+    error = 0;
 
 end
 

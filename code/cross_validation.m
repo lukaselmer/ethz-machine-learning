@@ -1,4 +1,4 @@
-function [ output_args ] = cross_validation(x,y)
+function [ w ] = cross_validation(x,y)
     
     [num_data, num_features] = size(x);
 
@@ -15,7 +15,8 @@ function [ output_args ] = cross_validation(x,y)
         y_train = y(train_idx,:);
 
         % train
-        w = train(x_train, y_train);
+        hyper_parameter = 1;
+        w = train(x_train, y_train, hyper_parameter);
 
         % get test data
         x_test = x(test_idx,:);
@@ -25,7 +26,7 @@ function [ output_args ] = cross_validation(x,y)
 
         
         % calculate error
-        error = calc_error();
+        error = calc_error(x_test, y_test, w);
     end
 
 
