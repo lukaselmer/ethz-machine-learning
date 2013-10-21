@@ -12,8 +12,7 @@ x = add_features(x);
 % normalize data
 [x,y] = normalize(x,y);
 
-% add 1 column (for offset)
-
+% add 
 
 % cross validation
 w = cross_validation(x,y);
