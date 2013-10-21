@@ -1,4 +1,4 @@
-function [ x, y ] = normalize( x, y )
+function [ d ] = normalize( d )
 
 end
 

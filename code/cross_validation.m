@@ -1,10 +1,11 @@
-function [ w ] = cross_validation(x,y)
+function [ error ] = cross_validation(x,y,hyper_parameter)
     
-    [num_data, num_features] = size(x);
+    num_data = size(x,1);
 
-    K = 5;
+    K = 10;
     indices = crossvalind('Kfold', num_data, K);
 
+    errors = zeros(K,1);
     for i = 1:K
         % get indices
         test_idx = (indices == i);
@@ -15,20 +16,16 @@ function [ w ] = cross_validation(x,y)
         y_train = y(train_idx,:);
 
         % train
-        hyper_parameter = 1;
         w = train(x_train, y_train, hyper_parameter);
 
         % get test data
         x_test = x(test_idx,:);
         y_test = y(test_idx,:);
-
-        % test
-
         
         % calculate error
-        error = calc_error(x_test, y_test, w);
+        errors(i) = calc_error(x_test, y_test, w);
     end
-
-
+    
+    error = mean(errors);
 end
 
