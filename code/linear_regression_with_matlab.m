@@ -20,22 +20,30 @@ t = RegressionTree.template('Surrogate','off');
 
 % rens = fitensemble(Training_X, Training_Y, 'LSBoost', 1000, t, ...
 
-strategy = 'Bag';
+strategy = 'bag';
 
-if strcmp(strategy, 'Bag')
-    rens_raw = fitensemble(Training_X, Training_Y, 'Bag', 1000, 'Tree', ... %, t
+if strcmp(strategy, 'bag')
+    rens_raw = fitensemble(Training_X, Training_Y, 'Bag', 100, 'Tree', ... %, t
         'PredictorNames', Training.Properties.VarNames(1:end-1), ...
-        'ResponseName', Training.Properties.VarNames{end}, ..., %        'kfold', 10, ...
+        'ResponseName', Training.Properties.VarNames{end}, ... % 'holdout', 0.1, ...
+        'Type', 'regression')
+elseif strcmp(strategy, 'bagkfold')
+    rens_raw = fitensemble(Training_X, Training_Y, 'Bag', 100, 'Tree', ... %, t
+        'PredictorNames', Training.Properties.VarNames(1:end-1), ...
+        'ResponseName', Training.Properties.VarNames{end}, ... % 'holdout', 0.1, ...
+        'kfold', 10, ...
         'Type', 'regression')
 else
-    rens_raw = fitensemble(Training_X, Training_Y, 'LSBoost', 100, 'Tree', ... %, t
+    rens_raw = fitensemble(Training_X, Training_Y, 'LSBoost', 10000, 'Tree', ... %, t
         'PredictorNames', Training.Properties.VarNames(1:end-1), ...
-        'LearnRate', 0.2, ...
+        'LearnRate', 0.1, ...
         'ResponseName', Training.Properties.VarNames{end}, ...   %'kfold', 10, ...
         'Type', 'regression')
 end
 
 %% Error
+rens = rens_raw;
+
 
 %    'kfold', '10', ...
 %'crossval', 'on', ...
@@ -46,9 +54,15 @@ end
 %rens = regularize(rens_raw,'lambda',[5 20], ...
 %    'npass', 60, ...
 %    'lambda', [0.001 logspace(log10(0.1/1000),log10(0.1),9)], 'reltol', 0.00000001); %,'lambda',[0.001 0.1]
-rens = rens_raw;
 
-Training_Prediction = predict(rens,Training_X);
+
+if strcmp(strategy, 'bagkfold')
+    Training_Prediction = rens_raw.kfoldPredict()
+else
+    Training_Prediction = predict(rens,Training_X);
+end
+
+%Training_Prediction = predict(rens,Training_X);
 %Training_Prediction = predict(rens,Training_X);
 
 %cvrens.kfoldPredict(Training_X)
