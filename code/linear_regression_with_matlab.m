@@ -13,6 +13,9 @@ Validation = dataset('xlsfile', '../data/validation.xlsx');
 Training_Y = Training.Delay;
 Training_X = double(Training(:,1:end-1));
 
+Validation_X = double(Validation(:,1:end));
+Testing_X = double(Testing(:,1:end));
+
 
 %%  Create a Delay Prediction Model
 
@@ -73,8 +76,6 @@ cv_rsme
 
 %% Export
 
-Validation_X = double(Validation(:,1:end));
-Testing_X = double(Testing(:,1:end));
 
 Validation_Prediction = predict(rens_raw,Validation_X);
 Testing_Prediction = predict(rens_raw,Testing_X);
