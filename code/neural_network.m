@@ -24,21 +24,26 @@ Testing_X = double(Testing(:,1:end));
 %net = newrb(Training_X', Training_Y', 10000, 1, 100, 1000);
 %net = newsom(Training_X', Training_Y', 20);
 
-net = newfit(Training_X', Training_Y', 20);
-net.trainParam.max_fail = 500;
-net.trainParam.epochs = 1000;
-net.trainParam.min_grad = 100;
+%net = newfit(Training_X', Training_Y', 20);
+net = feedforwardnet([12 12], 'trainbr');
+net.trainParam.max_fail = 2000;
+net.trainParam.epochs = 50000;
+%net.trainParam.min_grad = 100;
+
 
 %net.trainParam.v = 1000;
 %net = train(net, Training_X', Training_Y');
-net = trainbr(net, Training_X', Training_Y');
+%net = trainbr(net, Training_X', Training_Y');
+%net = trainlm(net, Training_X', Training_Y');
+%net = traingdx(net, Training_X', Training_Y');
+net = train(net, Training_X', Training_Y');
 
 
 
-%% Evaluate error
+% Evaluate error
 
 Training_Prediction = sim(net, Training_X')';
-    
+
 y_avg = mean(Training_Y);
 cv_rsme = sqrt(sum((Training_Prediction - Training_Y).^2) / size(Training_Y, 1)) / y_avg;
 cv_rsme
