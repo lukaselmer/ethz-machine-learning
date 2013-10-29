@@ -23,7 +23,7 @@ t = RegressionTree.template('Surrogate','off');
 strategy = 'Bag';
 
 if strcmp(strategy, 'Bag')
-    rens_raw = fitensemble(Training_X, Training_Y, 'Bag', 50, 'Tree', ... %, t
+    rens_raw = fitensemble(Training_X, Training_Y, 'Bag', 1000, 'Tree', ... %, t
         'PredictorNames', Training.Properties.VarNames(1:end-1), ...
         'ResponseName', Training.Properties.VarNames{end}, ..., %        'kfold', 10, ...
         'Type', 'regression')
@@ -43,9 +43,11 @@ end
 %cvrens = crossval(rens);
 
 
-rens = regularize(rens_raw,'lambda',[0.001 0.1]);
+%rens = regularize(rens_raw,'lambda',[5 20], ...
+%    'npass', 60, ...
+%    'lambda', [0.001 logspace(log10(0.1/1000),log10(0.1),9)], 'reltol', 0.00000001); %,'lambda',[0.001 0.1]
+rens = rens_raw;
 
-Training_X = double(Training(:,1:end-1));
 Training_Prediction = predict(rens,Training_X);
 %Training_Prediction = predict(rens,Training_X);
 
