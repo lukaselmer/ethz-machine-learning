@@ -1,21 +1,28 @@
-function [ cv_rsme ] = calc_error_of_model( model, X_in, y )
+function [ cv_rsme ] = calc_error_of_model( model, X_in, y_in, hyper_parameter )
 %CALC_ERROR_WITH_MODEL Summary of this function goes here
 %   Detailed explanation goes here
 
 X = add_features_by_model(X_in, model);
-y_std = 1;
-y_mean = 0;
+
+[X, ~, ~] = normalize(X);
+[y, y_mean, y_std] = normalize(y_in);
+
+% add column with ones (for offset)
+%X = [ones(size(X,1),1),X];
+            
+%y=y_in;
+%y_std = 1;
+%y_mean = 0;
 %[min_error, min_idx] = min(errors);
 %best_parameter = parameters(min_idx);
 %min_idx
 %min_error
-best_parameter = 1;
 
 % train with best parameter with all training data
-w = train(X, y, best_parameter);
+w = train(X, y, hyper_parameter);
 
 %calculate error
-y_cmp = y;% M(:,15); % y values to calcuate the prediction error
+y_cmp = y_in;% M(:,15); % y values to calcuate the prediction error
 y_pred = (w' * X')';
 y_pred = (y_pred.*y_std) + y_mean';
 

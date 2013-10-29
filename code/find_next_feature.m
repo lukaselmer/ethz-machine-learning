@@ -1,4 +1,4 @@
-function [ best_model ] = find_next_feature( model, X_in, y )
+function [ best_model ] = find_next_feature( model, X_in, y, hyper_parameter )
 %FIND_NEXT_FEATURE Summary of this function goes here
 %   Detailed explanation goes here
     [m, n] = size(model);
@@ -19,8 +19,8 @@ function [ best_model ] = find_next_feature( model, X_in, y )
             X = add_features_by_model(X_in, new_model);
             
             % normalize data
-            %X = normalize(X);
-            %y = normalize(y);
+            X = normalize(X);
+            y = normalize(y);
 
             % add column with ones (for offset)
             X = [ones(size(X,1),1),X];
@@ -29,7 +29,7 @@ function [ best_model ] = find_next_feature( model, X_in, y )
        %     parameters = (0:0.01:1)';
         %    errors = zeros(size(parameters,1), 1);
 
-            new_model_error = cross_validation(X,y, 1); %hyper_parameter = 1
+            new_model_error = cross_validation(X,y, hyper_parameter); %hyper_parameter = 1
         %    new_model_error
           %  for i = 1:size(parameters)
           %      errors(i) = cross_validation(X,y,parameters(i));

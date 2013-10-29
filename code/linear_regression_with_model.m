@@ -4,65 +4,39 @@ M = csvread('../data/training.csv');
 % split data in features / labels
 X_in = M(:,1:14);
 y = M(:,15);
-abs_min_error = 1000000;
-best_model = 0;
 
-binModel = zeros(14,18);
+hyper_parameter = 0.5;
+max_features = 2;
+binModel = zeros(14,18);%18+14=32
+binModel
+
+model_error = calc_error_of_model(binModel, X_in, y, hyper_parameter);
+model_error
+
 while 1
-    binModel = find_next_feature(binModel, X_in, y);
-    binModel
-    model_error = calc_error_of_model(binModel, X_in, y);
+    binModel = find_next_feature(binModel, X_in, y, hyper_parameter);
+    %binModel
+    model_error = calc_error_of_model(binModel, X_in, y, hyper_parameter);
     model_error
     features = sum(sum(binModel));
     
-    if(features >= 7)
+    if(features >= max_features)
         break;
     end
 end
-return;
-for i=1:20
-model = zeros(14,1);
-%model(1) = 1;
-% model(3) = randi(5,1)-1;
-for j=1:14
-    model(j) = randi(6,1)-1;
-end
-    
-% add features
-X = add_features_by_model(X_in, model);
+%return;
+% train with best parameter with all training data
 
-% normalize data
-X = normalize(X);
-y = normalize(y);
+X = add_features_by_model(X_in, binModel);
+
+[X, ~, ~] = normalize(X);
+[y, y_mean, y_std] = normalize(y);
 
 % add column with ones (for offset)
 X = [ones(size(X,1),1),X];
 
-% cross validation
-parameters = (0:0.01:1)';
-errors = zeros(size(parameters,1), 1);
-
-for i = 1:size(parameters)
-    errors(i) = cross_validation(X,y,parameters(i));
-end
-
-[min_error, min_idx] = min(errors);
-best_parameter = parameters(min_idx);
-%min_idx
-
-if min_error < abs_min_error
-    best_model = model;
-    abs_min_error = min_error;
-end
-
-%best_parameter
-end
-best_model'
-abs_min_error
-return;
-% train with best parameter with all training data
-w = train(X, y, best_parameter);
+w = train(X, y, hyper_parameter);
 
 
 % generate output
-generate_output (w);
+generate_output (w, y_mean, y_std, binModel);
