@@ -7,6 +7,19 @@ y = M(:,15);
 abs_min_error = 1000000;
 best_model = 0;
 
+binModel = zeros(14,18);
+while 1
+    binModel = find_next_feature(binModel, X_in, y);
+    binModel
+    model_error = calc_error_of_model(binModel, X_in, y);
+    model_error
+    features = sum(sum(binModel));
+    
+    if(features >= 7)
+        break;
+    end
+end
+return;
 for i=1:20
 model = zeros(14,1);
 %model(1) = 1;
