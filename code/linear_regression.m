@@ -23,11 +23,13 @@ for i = 1:size(parameters)
     errors(i) = cross_validation(x,y,parameters(i));
 end
 
-[~, min_idx] = min(errors);
+[min_error, min_idx] = min(errors);
 best_parameter = parameters(min_idx);
-
+min_idx
+min_error
+best_parameter
 % train with best parameter with all training data
-w = train(x,y,best_parameter);
+w = train(x, y, best_parameter);
 
 %calculate error
 y_cmp = M(:,15); % y values to calcuate the prediction error

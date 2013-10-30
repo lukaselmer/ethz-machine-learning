@@ -1,9 +1,9 @@
-function [ w ] = train(x, y, hyper_parameter)
+function [ w ] = train(X, y, hyper_parameter)
 
     % linear regression
     % w = inv(x'*x)*x'*y;
     
     % ridge regression
-    w = inv(x'*x+hyper_parameter*eye(size(x,2)))*x'*y;
+    w = inv(X'*X + hyper_parameter*eye(size(X,2)))* X'*y;
 end
 
