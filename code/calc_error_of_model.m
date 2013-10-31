@@ -4,15 +4,15 @@ function [ cv_rsme ] = calc_error_of_model( model, X_in, y_in, hyper_parameter )
 
 X = add_features_by_model(X_in, model);
 
-[X, ~, ~] = normalize(X);
+%[X, ~, ~] = normalize(X);
 [y, y_mean, y_std] = normalize(y_in);
 
 % add column with ones (for offset)
 %X = [ones(size(X,1),1),X];
             
-%y=y_in;
-%y_std = 1;
-%y_mean = 0;
+y=y_in;
+y_std = 1;
+y_mean = 0;
 %[min_error, min_idx] = min(errors);
 %best_parameter = parameters(min_idx);
 %min_idx

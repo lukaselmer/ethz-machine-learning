@@ -1,17 +1,20 @@
 % read data
 M = csvread('../data/training.csv');
+% Disable warnings
+warning('off', 'MATLAB:nearlySingularMatrix')
+warning('off', 'MATLAB:singularMatrix')
 
 % split data in features / labels
 X_in = M(:,1:14);
 y = M(:,15);
 
 hyper_parameter = 0.5;
-max_features = 2;
+max_features = 16;
 binModel = zeros(14,32);%18+14=32
-binModel
+%binModel
 
-model_error = calc_error_of_model(binModel, X_in, y, hyper_parameter);
-model_error
+%model_error = calc_error_of_model(binModel, X_in, y, hyper_parameter);
+%model_error
 
 while 1
     binModel = find_next_feature(binModel, X_in, y, hyper_parameter);
@@ -24,6 +27,8 @@ while 1
         break;
     end
 end
+%binModel
+model_error
 %return;
 % train with best parameter with all training data
 
