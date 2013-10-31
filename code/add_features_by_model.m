@@ -20,7 +20,7 @@ function [ X ] = add_features_by_model( X, model )
             X = [X X(:, j).*X(:, k-4)];
         end
         if(k>18 && model(j,k) == 1)% log regression
-            X = [X X(:, j).*X(:, k-18).^3];
+            X = [X X(:, j).*X(:, k-18).^2];
         end
         
         %if(model(i) == 4) % quad regression
