@@ -11,7 +11,7 @@ X_in = M(:,1:14);
 y = M(:,15);
 
 hyper_parameter = 0.5;
-max_features = 11;
+max_features = 10;
 binModel = zeros(14,32);%18+14=32
 %binModel
 
@@ -22,7 +22,7 @@ max = 0
 bestBinModel = zeros(14,32);
 bestBinModelError = 1000000;
 
-while max < 50
+while max < 100
     max = max + 1
     
     binModel = find_next_feature(binModel, X_in, y, hyper_parameter);
@@ -36,16 +36,43 @@ while max < 50
         bestBinModelError = model_error;
     end
     
-    if model_error < 0.19
-        break;
-    end
+    %if model_error < 0.19
+    %    break;
+    %end
     
     features = sum(sum(binModel));
     if(features >= max_features)
-        binModel = remove_random_feature(binModel);
-        binModel = remove_random_feature(binModel);
-        binModel = remove_random_feature(binModel);
+        r = rand(1);
+        if(r < 0.35) % 0.35
+            binModel = remove_random_feature(binModel);
+            binModel = remove_random_feature(binModel);
+        elseif(r < 0.65) % 0.3
+            binModel = remove_random_feature(binModel);
+            binModel = remove_random_feature(binModel);
+            binModel = remove_random_feature(binModel);
+        elseif(r < 0.85) % 0.2
+            binModel = remove_random_feature(binModel);
+            binModel = remove_random_feature(binModel);
+            binModel = remove_random_feature(binModel);
+            binModel = remove_random_feature(binModel);
+        elseif(r < 0.95) % 0.1
+            binModel = remove_random_feature(binModel);
+            binModel = remove_random_feature(binModel);
+            binModel = remove_random_feature(binModel);
+            binModel = remove_random_feature(binModel);
+            binModel = remove_random_feature(binModel);
+        else % 0.05
+            binModel = remove_random_feature(binModel);
+            binModel = remove_random_feature(binModel);
+            binModel = remove_random_feature(binModel);
+            binModel = remove_random_feature(binModel);
+            binModel = remove_random_feature(binModel);
+            binModel = remove_random_feature(binModel);
+        end
     elseif(rand(1) < 0.2)
+        binModel = remove_random_feature(binModel);
+    elseif(rand(1) < 0.1)
+        binModel = remove_random_feature(binModel);
         binModel = remove_random_feature(binModel);
     end
 end
