@@ -1,5 +1,6 @@
 % read data
 M = csvread('../data/training.csv');
+M = man_normalize(M);
 
 % split data in features / labels
 X_in = M(:,1:14);
