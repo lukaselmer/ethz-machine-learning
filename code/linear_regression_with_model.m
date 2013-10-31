@@ -22,7 +22,7 @@ max = 0
 bestBinModel = zeros(14,32);
 bestBinModelError = 1000000;
 
-while max < 100
+while max < 20
     max = max + 1
     
     binModel = find_next_feature(binModel, X_in, y, hyper_parameter);
@@ -100,4 +100,4 @@ w = train(X, y, hyper_parameter);
 
 
 % generate output
-generate_output (w, y_mean, y_std, binModel);
+generate_output (w, y_mean, y_std, binModel, model_error);
