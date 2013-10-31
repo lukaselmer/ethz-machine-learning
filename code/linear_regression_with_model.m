@@ -33,8 +33,6 @@ while max < 20
     ridgeError
     squaredError
     
-    
-    
     if bestBinModelError > ridgeError
         bestBinModel = binModel;
         bestBinModelError = ridgeError;
