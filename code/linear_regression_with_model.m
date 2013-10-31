@@ -5,6 +5,7 @@ M = man_normalize(M);
 % Disable warnings
 warning('off', 'MATLAB:nearlySingularMatrix')
 warning('off', 'MATLAB:singularMatrix')
+warning('off', 'all')
 
 % split data in features / labels
 X_in = M(:,1:14);
@@ -23,7 +24,7 @@ bestBinModel = zeros(14,32);
 bestBinModelError = 100000000000000000000;
 foundDuring = 0;
 
-while max < 100
+while max < 50
     max = max + 1
     
     [binModel, ridgeError] = find_next_feature(binModel, X_in, y, hyper_parameter);

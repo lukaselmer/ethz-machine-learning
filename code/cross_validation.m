@@ -17,6 +17,7 @@ function [ error ] = cross_validation(x,y,hyper_parameter)
 
         % train
         w = train(x_train, y_train, hyper_parameter);
+        %w = regress(y_train, x_train);
 
         % get test data
         x_test = x(test_idx,:);
