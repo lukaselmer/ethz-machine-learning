@@ -24,7 +24,7 @@ bestBinModel = zeros(14,32);
 bestBinModelError = 100000000000000000000;
 foundDuring = 0;
 
-while max < 20
+while max < 25
     max = max + 1
     
     [binModel, ridgeError] = find_next_feature(binModel, X_in, y, hyper_parameter);
