@@ -7,7 +7,7 @@ X_in = M(:,1:14);
 y = M(:,15);
 
 hyper_parameter = 0.5;
-max_features = 2;
+max_features = 7;
 binModel = zeros(14,32);%18+14=32
 binModel
 
@@ -30,7 +30,7 @@ end
 
 X = add_features_by_model(X_in, binModel);
 
-[X, ~, ~] = normalize(X);
+%[X, ~, ~] = normalize(X);
 [y, y_mean, y_std] = normalize(y);
 
 % add column with ones (for offset)

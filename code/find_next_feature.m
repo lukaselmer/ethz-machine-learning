@@ -19,8 +19,8 @@ function [ best_model ] = find_next_feature( model, X_in, y, hyper_parameter )
             X = add_features_by_model(X_in, new_model);
             
             % normalize data
-            X = normalize(X);
-            y = normalize(y);
+            %X = normalize(X);
+            %y = normalize(y);
 
             % add column with ones (for offset)
             X = [ones(size(X,1),1),X];
