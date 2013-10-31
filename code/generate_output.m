@@ -1,4 +1,4 @@
-function generate_output( w, y_mean, y_std, model )
+function generate_output( w, y_mean, y_std, model, model_error )
     
     % read data
     validation_data = csvread('../data/validation.csv');
@@ -29,7 +29,10 @@ function generate_output( w, y_mean, y_std, model )
     y_validation = (y_validation.*y_std) + y_mean';
     y_testing = (y_testing.*y_std) + y_mean';
 
-    csvwrite ('../data/model.out', model);
+    
+    csvwrite ('../data/model/error.out', model_error);
+    csvwrite ('../data/model/w.out', w);
+    csvwrite ('../data/model/features.out', model);
     csvwrite ('../data/validation.out', y_validation);
     csvwrite ('../data/testing.out', y_testing);
 end
