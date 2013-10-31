@@ -11,26 +11,48 @@ X_in = M(:,1:14);
 y = M(:,15);
 
 hyper_parameter = 0.5;
-max_features = 16;
+max_features = 13;
 binModel = zeros(14,32);%18+14=32
 %binModel
 
 %model_error = calc_error_of_model(binModel, X_in, y, hyper_parameter);
 %model_error
 
-while 1
+max = 0
+bestBinModel = zeros(14,32);
+bestBinModelError = 1000000;
+
+while max < 50
+    max = max + 1
+    
     binModel = find_next_feature(binModel, X_in, y, hyper_parameter);
     %binModel
     model_error = calc_error_of_model(binModel, X_in, y, hyper_parameter);
     model_error
-    features = sum(sum(binModel));
     
-    if(features >= max_features)
+    if bestBinModelError > model_error
+        bestBinModel = binModel;
+        bestBinModelError = model_error;
+    end
+    
+    if model_error < 0.19
         break;
     end
+    
+    features = sum(sum(binModel));
+    if(features >= max_features)
+        binModel = remove_random_feature(binModel);
+        binModel = remove_random_feature(binModel);
+        binModel = remove_random_feature(binModel);
+    elseif(rand(1) < 0.2)
+        binModel = remove_random_feature(binModel);
+    end
 end
+
+binModel = bestBinModel;
+
 %binModel
-model_error
+%model_error
 %return;
 % train with best parameter with all training data
 %binModel

@@ -3,8 +3,8 @@ function generate_output( w, y_mean, y_std, model )
     % read data
     validation_data = csvread('../data/validation.csv');
     testing_data = csvread('../data/testing.csv');
-    validation_data = man_normalize(validation_data);
-    testing_data = man_normalize(testing_data);
+    %validation_data = man_normalize(validation_data);
+    %testing_data = man_normalize(testing_data);
 
     % split data in features / labels
     x_validation = validation_data(:,1:14);
