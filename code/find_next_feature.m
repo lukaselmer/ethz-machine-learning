@@ -1,10 +1,10 @@
-function [ best_model ] = find_next_feature( model, X_in, y, hyper_parameter )
+function [ best_model, best_error ] = find_next_feature( model, X_in, y, hyper_parameter )
 %FIND_NEXT_FEATURE Summary of this function goes here
 %   Detailed explanation goes here
     [m, n] = size(model);
 
     best_model = model;
-    best_error = 10000000000;
+    best_error = 1000000000000000000;
     
     for j=1:m
         for k=1:n

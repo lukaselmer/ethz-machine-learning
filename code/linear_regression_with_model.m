@@ -18,22 +18,26 @@ binModel = zeros(14,32);%18+14=32
 %model_error = calc_error_of_model(binModel, X_in, y, hyper_parameter);
 %model_error
 
-max = 0
+max = 0;
 bestBinModel = zeros(14,32);
-bestBinModelError = 1000000;
+bestBinModelError = 100000000000000000000;
+foundDuring = 0;
 
 while max < 100
     max = max + 1
     
-    binModel = find_next_feature(binModel, X_in, y, hyper_parameter);
+    [binModel, ridgeError] = find_next_feature(binModel, X_in, y, hyper_parameter);
     %binModel
-    model_error = calc_error_of_model(binModel, X_in, y, hyper_parameter);
-    model_error
+    squaredError = calc_error_of_model(binModel, X_in, y, hyper_parameter);
+    ridgeError
+    squaredError
     
     
-    if bestBinModelError > model_error
+    
+    if bestBinModelError > ridgeError
         bestBinModel = binModel;
-        bestBinModelError = model_error;
+        bestBinModelError = ridgeError;
+        foundDuring = max;
     end
     
     %if model_error < 0.19
@@ -43,37 +47,36 @@ while max < 100
     features = sum(sum(binModel));
     if(features >= max_features)
         r = rand(1);
-        if(r < 0.35) % 0.35
+        if(r < 0.475) % 0.475
+            binModel = remove_random_feature(binModel);
+        elseif(r < 0.775) % 0.3
             binModel = remove_random_feature(binModel);
             binModel = remove_random_feature(binModel);
-        elseif(r < 0.65) % 0.3
-            binModel = remove_random_feature(binModel);
-            binModel = remove_random_feature(binModel);
-            binModel = remove_random_feature(binModel);
-        elseif(r < 0.85) % 0.2
-            binModel = remove_random_feature(binModel);
+        elseif(r < 0.875) % 0.2
             binModel = remove_random_feature(binModel);
             binModel = remove_random_feature(binModel);
             binModel = remove_random_feature(binModel);
-        elseif(r < 0.95) % 0.1
+        elseif(r < 0.975) % 0.1
             binModel = remove_random_feature(binModel);
             binModel = remove_random_feature(binModel);
             binModel = remove_random_feature(binModel);
             binModel = remove_random_feature(binModel);
-            binModel = remove_random_feature(binModel);
-        else % 0.05
-            binModel = remove_random_feature(binModel);
+        else % 0.025
             binModel = remove_random_feature(binModel);
             binModel = remove_random_feature(binModel);
             binModel = remove_random_feature(binModel);
             binModel = remove_random_feature(binModel);
             binModel = remove_random_feature(binModel);
         end
-    elseif(rand(1) < 0.2)
+    elseif(rand(1) < 0.05)
         binModel = remove_random_feature(binModel);
-    elseif(rand(1) < 0.1)
+    elseif(rand(1) < 0.02)
         binModel = remove_random_feature(binModel);
         binModel = remove_random_feature(binModel);
+    end
+    
+    if rand(1) < 0.1
+        binModel = bestBinModel;
     end
 end
 
@@ -85,8 +88,9 @@ binModel = bestBinModel;
 % train with best parameter with all training data
 %binModel
 
-model_error = calc_error_of_model_single(binModel, X_in, y, hyper_parameter);
-model_error
+squaredError = calc_error_of_model_single(binModel, X_in, y, hyper_parameter);
+squaredError
+foundDuring
 
 X = add_features_by_model(X_in, binModel);
 
