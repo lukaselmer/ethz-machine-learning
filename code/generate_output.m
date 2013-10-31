@@ -29,6 +29,7 @@ function generate_output( w, y_mean, y_std, model )
     y_validation = (y_validation.*y_std) + y_mean';
     y_testing = (y_testing.*y_std) + y_mean';
 
+    csvwrite ('../data/model.out', model);
     csvwrite ('../data/validation.out', y_validation);
     csvwrite ('../data/testing.out', y_testing);
 end
