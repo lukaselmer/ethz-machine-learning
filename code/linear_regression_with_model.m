@@ -11,7 +11,7 @@ X_in = M(:,1:14);
 y = M(:,15);
 
 hyper_parameter = 0.5;
-max_features = 13;
+max_features = 12;
 binModel = zeros(14,32);%18+14=32
 %binModel
 
