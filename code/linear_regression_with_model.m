@@ -30,6 +30,7 @@ while max < 50
     model_error = calc_error_of_model(binModel, X_in, y, hyper_parameter);
     model_error
     
+    
     if bestBinModelError > model_error
         bestBinModel = binModel;
         bestBinModelError = model_error;
