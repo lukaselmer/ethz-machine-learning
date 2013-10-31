@@ -1,7 +1,5 @@
 function [ d, d_mean, d_std ] = normalize( d )
-%d_mean=0;
-%d_std=1;
-%return;
+d_mean=0;d_std=1;return;
     d_mean = mean(d);
     d = d - repmat(d_mean, size(d,1), 1);
     d_std = std(d);
