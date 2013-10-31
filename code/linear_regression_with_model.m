@@ -31,7 +31,7 @@ while 1
 end
 %return;
 % train with best parameter with all training data
-
+%binModel
 
 model_error = calc_error_of_model_single(binModel, X_in, y, hyper_parameter);
 model_error
