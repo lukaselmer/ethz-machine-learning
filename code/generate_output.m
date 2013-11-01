@@ -1,4 +1,4 @@
-function generate_output( w, y_mean, y_std, model, model_error )
+function generate_output( w, y_mean, y_std, model, model_error, inputColumns,featureFunctions, multiFeatures )
     
     % read data
     validation_data = csvread('../data/validation.csv');
@@ -11,8 +11,8 @@ function generate_output( w, y_mean, y_std, model, model_error )
     x_testing = testing_data(:,1:14);
 
     % add features
-    x_validation = add_features_by_model(x_validation, model);
-    x_testing = add_features_by_model(x_testing, model);
+    x_validation = add_features_by_model(x_validation, model, inputColumns,featureFunctions, multiFeatures);
+    x_testing = add_features_by_model(x_testing, model, inputColumns,featureFunctions, multiFeatures);
 
     % normalize data
     x_validation = normalize(x_validation);

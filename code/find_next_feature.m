@@ -1,4 +1,4 @@
-function [ best_model, best_error ] = find_next_feature( model, X_in, y, hyper_parameter )
+function [ best_model, best_error ] = find_next_feature( model, X_in, y, hyper_parameter, inputColumns,featureFunctions, multiFeatures )
 %FIND_NEXT_FEATURE Summary of this function goes here
 %   Detailed explanation goes here
     [m, n] = size(model);
@@ -16,7 +16,7 @@ function [ best_model, best_error ] = find_next_feature( model, X_in, y, hyper_p
             new_model(j,k) = 1;
             
             % add features
-            X = add_features_by_model(X_in, new_model);
+            X = add_features_by_model(X_in, new_model, inputColumns,featureFunctions, multiFeatures);
             
             % normalize data
             %X = normalize(X);

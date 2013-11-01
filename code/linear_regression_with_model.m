@@ -1,3 +1,6 @@
+clear all
+clc
+
 % read data
 M = csvread('../data/training.csv');
 M = man_normalize(M);
@@ -7,29 +10,34 @@ warning('off', 'MATLAB:nearlySingularMatrix')
 warning('off', 'MATLAB:singularMatrix')
 warning('off', 'all')
 
+% Define these things for the dynamic features
+inputColumns = 14;
+featureFunctions = 9;
+multiFeatures = 4; % Warning: setting this higher will lead to a slower execution!
+
 % split data in features / labels
-X_in = M(:,1:14);
+X_in = M(:,1:inputColumns);
 y = M(:,15);
 
 hyper_parameter = 0.5;
 max_features = 10;
-binModel = zeros(14,32);%18+14=32
+binModel = zeros(inputColumns,featureFunctions + (multiFeatures * inputColumns));%18+14=32, 1
 %binModel
 
 %model_error = calc_error_of_model(binModel, X_in, y, hyper_parameter);
 %model_error
 
 max = 0;
-bestBinModel = zeros(14,32);
+bestBinModel = zeros(inputColumns,featureFunctions + (multiFeatures * inputColumns));
 bestBinModelError = 100000000000000000000;
 foundDuring = 0;
 
 while max < 25
     max = max + 1
     
-    [binModel, ridgeError] = find_next_feature(binModel, X_in, y, hyper_parameter);
+    [binModel, ridgeError] = find_next_feature(binModel, X_in, y, hyper_parameter, inputColumns,featureFunctions, multiFeatures);
     %binModel
-    squaredError = calc_error_of_model(binModel, X_in, y, hyper_parameter);
+    squaredError = calc_error_of_model(binModel, X_in, y, hyper_parameter, inputColumns,featureFunctions, multiFeatures);
     ridgeError
     squaredError
     
@@ -87,11 +95,11 @@ binModel = bestBinModel;
 % train with best parameter with all training data
 %binModel
 
-squaredError = calc_error_of_model_single(binModel, X_in, y, hyper_parameter);
+squaredError = calc_error_of_model_single(binModel, X_in, y, hyper_parameter, inputColumns,featureFunctions, multiFeatures);
 squaredError
 foundDuring
 
-X = add_features_by_model(X_in, binModel);
+X = add_features_by_model(X_in, binModel, inputColumns,featureFunctions, multiFeatures);
 
 %[X, ~, ~] = normalize(X);
 [y, y_mean, y_std] = normalize(y);
@@ -103,4 +111,4 @@ w = train(X, y, hyper_parameter);
 
 
 % generate output
-generate_output (w, y_mean, y_std, binModel, model_error);
+generate_output (w, y_mean, y_std, binModel, squaredError, inputColumns,featureFunctions, multiFeatures);

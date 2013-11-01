@@ -6,9 +6,10 @@ function [ M ] = man_normalize( M )
     %M = removerows(M, 'ind', [302 206 187 134 132 94 88 12])
     %badRows = [302 206 187 134 132 94 88 12]; <= best!?
     %badRows = [316 86 218 68 270 78 127 184 144 274 48 206 94 134 12 132 302 88 187];
+    %M(:,16) = M(:,15);
+    
     badRows = [48 206 94 134 12 132 302 88 187];
     M = removerows(M, 'ind', badRows);
-   
     
     
     

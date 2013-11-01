@@ -1,8 +1,8 @@
-function [ cv_rsme ] = calc_error_of_model_single( model, X_in, y_in, hyper_parameter )
+function [ cv_rsme ] = calc_error_of_model_single( model, X_in, y_in, hyper_parameter, inputColumns,featureFunctions, multiFeatures )
 %CALC_ERROR_WITH_MODEL Summary of this function goes here
 %   Detailed explanation goes here
 
-X = add_features_by_model(X_in, model);
+X = add_features_by_model(X_in, model, inputColumns,featureFunctions, multiFeatures);
 
 [X, ~, ~] = normalize(X);
 [y, y_mean, y_std] = normalize(y_in);
