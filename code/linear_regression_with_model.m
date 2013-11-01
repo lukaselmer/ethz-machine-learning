@@ -19,7 +19,7 @@ multiFeatures = 4; % Warning: setting this higher will lead to a slower executio
 X_in = M(:,1:inputColumns);
 y = M(:,15);
 
-hyper_parameter = 0.5;
+hyper_parameter = 0.25;
 max_features = 10;
 binModel = zeros(inputColumns,featureFunctions + (multiFeatures * inputColumns));%18+14=32, 1
 %binModel
