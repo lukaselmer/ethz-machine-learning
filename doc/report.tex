@@ -3,6 +3,7 @@
 \usepackage{amsmath}
 \usepackage[pdftex]{hyperref}
 \usepackage[a4paper]{geometry}
+\usepackage{hyperref}
 
 % Lengths and indenting
 \setlength{\textwidth}{16.5cm}
@@ -26,22 +27,27 @@
 \maketitle
 
 \section*{Experimental Protocol}
-Usage:\linebreak
-Download the csv files to /data/....csv (... = training, testing, validation)\linebreak
-run linear\_regression\_with\_model.m \linebreak
+Usage:\\
+Download the csv files to /data/....csv (... = training, testing, validation)\\
+Run linear\_regression\_with\_model.m \\
 Results are in /data/....out (... = training, testing, validation)
 The model used is stored in /data/model/*
 
 \section{Tools}
-\textit{Which tools and libraries have you used (e.g. Matlab, Python with scikit-learn, Java with Weka,
-SPSS, language x with library y, $\ldots$). If you have source-code (Matlab scripts, Python scripts, Java source folder, \dots),
-make sure to submit it on the project website together with this report. If you only used
-command-line or GUI-tools describe what you did.}
+
 \begin{itemize}
 \item Matlab (code is in /code directory)
+\item Git / \href{https://github.com/lukaselmer/ethz-machine-learning}{Github Repository} \footnote{https://github.com/lukaselmer/ethz-machine-learning}
+  \begin{itemize}
+    \item \href{https://github.com/lukaselmer/ethz-machine-learning/releases/tag/best\_v3}{Final solution} \footnote{https://github.com/lukaselmer/ethz-machine-learning/releases/tag/best\_v3} (tag best\_v3, master branch, code attached in the zip file) 
+    \item \href{https://github.com/lukaselmer/ethz-machine-learning/tree/monte\_carlo\_superexperimental}{Experimental branch} \footnote{https://github.com/lukaselmer/ethz-machine-learning/tree/monte\_carlo\_superexperimental} with more feature variation and stochastic gradient decent (algorithm is slow, branch monte\_carlo\_superexperimental)
+    \item \href{https://github.com/lukaselmer/ethz-machine-learning/tree/experimental}{Nonlinear regression approches} \footnote{https://github.com/lukaselmer/ethz-machine-learning/tree/experimental} (e.g. with neural networks)
+  \end{itemize}
 \end{itemize}
 
 \section{Algorithm}
+\label{sec:Algorithm}
+
 The algorithm we used has evolved during the project. Basically there are four lage evolution steps.
 Basic Algorithm
 Ridge regression with k-Fold cross validation with k=10. Use all features linearly and manually add some features. Problem: Manual try and error.
@@ -62,14 +68,17 @@ Therefore, a monte carlo algorithm was developed. Even though the next feature i
 
 To not loose the best found model, the best model is stored in every iteration a new lowest error is found. Additionally, to help converge to a good fit, there is a small probability that the current model is set to the best model.
 
-
 \section{Features}
+\label{sec:Features}
 The features found by the algorithm vary with each training. The submitted solution contains following features:
 $$ y = w \cdot [x_5^3, x_{14}^2 + x_{14}^3, x_{10} \cdot x_5, x_{13} \cdot x_{14}, x_{5}/x_{3}, x_{10}/x_{4}, x_{14}/x_{5}, x_{3}/x_{10}, x_{13} \cdot x_{5}^2,x_{14} \cdot x_{13}^2, x_{13} \cdot x_{10}^3, x_{14}\cdot x_{13}^3] $$
+
 \section{Parameters}
-As described in \ref{2-algo}, the parameters for the model are learned. There are some other parameters tough:
+\label{sec:Parameters}
+
+As described in section~\ref{sec:Algorithm}, the parameters for the model are learned. There are some other parameters tough:
 \begin{itemize}
-\item \# of features in feature map: 12 (can be combined, see \ref{3-features})
+\item \# of features in feature map: 12 (can be combined, see section~\ref{sec:Features})
 \item Hyper parameter for ridge regression: 0.25, evaluated by experiments
 \item \# of for-loops it takes for learning (with monte carlo): 25, can be more, but may lead to overfitting
 \item Probabilities for decision based on random values / monte carlo: educated guess and experiments
