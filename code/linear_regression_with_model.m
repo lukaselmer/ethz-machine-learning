@@ -20,7 +20,7 @@ X_in = M(:,1:inputColumns);
 y = M(:,15);
 
 hyper_parameter = 0.25;
-max_features = 10;
+max_features = 12;
 binModel = zeros(inputColumns,featureFunctions + (multiFeatures * inputColumns));%18+14=32, 1
 %binModel
 
@@ -45,6 +45,10 @@ while max < 25
         bestBinModel = binModel;
         bestBinModelError = ridgeError;
         foundDuring = max;
+    end
+    
+    if rand(1) < 0.1
+        binModel = bestBinModel;
     end
     
     %if model_error < 0.19
@@ -80,10 +84,6 @@ while max < 25
     elseif(rand(1) < 0.02)
         binModel = remove_random_feature(binModel);
         binModel = remove_random_feature(binModel);
-    end
-    
-    if rand(1) < 0.1
-        binModel = bestBinModel;
     end
 end
 
