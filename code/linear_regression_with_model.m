@@ -12,7 +12,7 @@ warning('off', 'all')
 
 % Define these things for the dynamic features
 inputColumns = 14;
-featureFunctions = 11; % was 9 during the test...
+featureFunctions = 11;
 multiFeatures = 15; % Warning: setting this higher will lead to a slower execution!
 
 % split data in features / labels
@@ -30,9 +30,14 @@ binModel = zeros(inputColumns,featureFunctions + (multiFeatures * inputColumns))
 bestBinModel = zeros(inputColumns,featureFunctions + (multiFeatures * inputColumns));
 bestBinModelError = 100000000000000000000;
 foundDuring = 0;
+secondBestBinModel=bestBinModel;
+thirdBestBinModel=secondBestBinModel;
+fourthBestBinModel=thirdBestBinModel;
+fifthBestBinModel=fourthBestBinModel;
 
 max = 0;
-while max < 50
+while max < 150
+    tic
     max = max + 1
     
     [binModel, ridgeError] = find_next_feature(binModel, X_in, y, hyper_parameter, inputColumns,featureFunctions, multiFeatures);
@@ -42,6 +47,12 @@ while max < 50
     squaredError
     
     if bestBinModelError > ridgeError
+
+        fifthBestBinModel=fourthBestBinModel;
+        fourthBestBinModel=thirdBestBinModel;
+        thirdBestBinModel=secondBestBinModel;
+        secondBestBinModel=bestBinModel;
+        
         bestBinModel = binModel;
         bestBinModelError = ridgeError;
         foundDuring = max;
@@ -85,9 +96,10 @@ while max < 50
     if rand(1) < 0.1
         binModel = bestBinModel;
     end
+    toc
 end
 
-binModel = bestBinModel;
+binModel = fifthBestBinModel;
 
 %binModel
 %model_error
