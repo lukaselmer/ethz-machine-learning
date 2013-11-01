@@ -20,19 +20,22 @@ X_in = M(:,1:inputColumns);
 y = M(:,15);
 
 hyper_parameter = 0.25;
-max_features = 12;
+max_features = 11;
 binModel = zeros(inputColumns,featureFunctions + (multiFeatures * inputColumns));%18+14=32, 1
 %binModel
 
 %model_error = calc_error_of_model(binModel, X_in, y, hyper_parameter);
 %model_error
 
-max = 0;
 bestBinModel = zeros(inputColumns,featureFunctions + (multiFeatures * inputColumns));
 bestBinModelError = 100000000000000000000;
 foundDuring = 0;
 
-while max < 25
+%% Find model
+
+max = 0;
+while max < 20
+    tic
     max = max + 1
     
     [binModel, ridgeError] = find_next_feature(binModel, X_in, y, hyper_parameter, inputColumns,featureFunctions, multiFeatures);
@@ -85,6 +88,7 @@ while max < 25
         binModel = remove_random_feature(binModel);
         binModel = remove_random_feature(binModel);
     end
+    toc
 end
 
 binModel = bestBinModel;
