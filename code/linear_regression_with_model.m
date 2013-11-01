@@ -35,8 +35,10 @@ thirdBestBinModel=secondBestBinModel;
 fourthBestBinModel=thirdBestBinModel;
 fifthBestBinModel=fourthBestBinModel;
 
+%% evaluate model
+
 max = 0;
-while max < 150
+while max < 1000
     tic
     max = max + 1
     
@@ -46,7 +48,7 @@ while max < 150
     ridgeError
     squaredError
     
-    if bestBinModelError > ridgeError
+    if bestBinModelError > squaredError
 
         fifthBestBinModel=fourthBestBinModel;
         fourthBestBinModel=thirdBestBinModel;
@@ -54,11 +56,11 @@ while max < 150
         secondBestBinModel=bestBinModel;
         
         bestBinModel = binModel;
-        bestBinModelError = ridgeError;
+        bestBinModelError = squaredError;
         foundDuring = max;
     end
     
-    if rand(1) < 0.1
+    if rand(1) < 0.15
         binModel = bestBinModel;
     end
     

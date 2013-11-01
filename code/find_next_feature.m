@@ -8,7 +8,7 @@ function [ best_model, best_error ] = find_next_feature( model, X_in, y, hyper_p
     
     for j=1:m
         for k=1:n
-            if rand(1) < 0.8
+            if rand(1) < 0.96
                 continue;
             end
             
