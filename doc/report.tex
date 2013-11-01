@@ -2,6 +2,7 @@
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage[pdftex]{hyperref}
+\usepackage[a4paper]{geometry}
 
 % Lengths and indenting
 \setlength{\textwidth}{16.5cm}
@@ -25,10 +26,11 @@
 \maketitle
 
 \section*{Experimental Protocol}
-\textit{Suppose that someone wants to reproduce your results. Briefly describe the steps used to obtain the
-predictions starting from the raw data set downloaded from the project website. Use the following
-sections to explain your methodology. Feel free to add graphs or screenshots if you think it's
-necessary. The report should contain a maximum of 2 pages.}
+Usage:\linebreak
+Download the csv files to /data/....csv (... = training, testing, validation)\linebreak
+run linear\_regression\_with\_model.m \linebreak
+Results are in /data/....out (... = training, testing, validation)
+The model used is stored in /data/model/*
 
 \section{Tools}
 \textit{Which tools and libraries have you used (e.g. Matlab, Python with scikit-learn, Java with Weka,
@@ -40,17 +42,49 @@ command-line or GUI-tools describe what you did.}
 \end{itemize}
 
 \section{Algorithm}
-\textit{Describe the algorithm you used for regression (e.g. ordinary least squares, ridge regression, $\ldots$)}
+The algorithm we used has evolved during the project. Basically there are four lage evolution steps.
+Basic Algorithm
+Ridge regression with k-Fold cross validation with k=10. Use all features linearly and manually add some features. Problem: Manual try and error.
+Determination and Elimination of "bad" training rows
+We observed that some training data could be corrupt, and thus this would impact the linear regression negatively. Therefore the following rows were excluded from the learning dataset:
+48 88 94 132 302 187.
+Automatic Model Selection Using Greedy Selection
+We define a set of possible features that can be used for the model. The model itself is represented as a binary matrix where an element in the model-matrix defines if the corresponding feature is used in the model or not.
+The first step in the algorithm then is to create the input data using the data read from the file and adding the additional features according to the model matrix.
+
+The greedy selection works as follows:
+The algorithm starts with an empty model (zero matrix). Then it finds the best model with exactly one element set to one. To find it, the algorithm simply tries every possible combination and selects the one with the best error. In the second iteration, the algorithm finds the best model with 2 elements set to one, based on the model found in the first iteration. The algorithm goes on until the desired number of features are found.
+
+Automatic Model Selection Using Monte Carlo Selection
+The downside of the greedy algorithm is that it can be trapped in local minima. For example, if two features in combination would be great, the greedy algorithm can miss this combination.
+
+Therefore, a monte carlo algorithm was developed. Even though the next feature is selected greedily, after every iteration there is a small chance that a random feature is dropped. Additionally, there is a parameter which controls how many features the model can contain at most (experiments show that 10 features is a good tradeoff for fitting and generalization). If the amount of features is reached, then some random features are dropped. Thus, many new combinations are possible.
+
+To not loose the best found model, the best model is stored in every iteration a new lowest error is found. Additionally, to help converge to a good fit, there is a small probability that the current model is set to the best model.
 
 
 \section{Features}
-\textit{Did you construct any new features? What feature transforms did you use?}
-
+The features found by the algorithm vary with each training. The submitted solution contains following features:
+$$ y = w \cdot [x_5^3, x_{14}^2 + x_{14}^3, x_{10} \cdot x_5, x_{13} \cdot x_{14}, x_{5}/x_{3}, x_{10}/x_{4}, x_{14}/x_{5}, x_{3}/x_{10}, x_{13} \cdot x_{5}^2,x_{14} \cdot x_{13}^2, x_{13} \cdot x_{10}^3, x_{14}\cdot x_{13}^3] $$
 \section{Parameters}
-\textit{How did you find the parameters of your model? (What parameters have you searched over, cross validation procedure, $\ldots$)}
+As described in \ref{2-algo}, the parameters for the model are learned. There are some other parameters tough:
+\begin{itemize}
+\item \# of features in feature map: 12 (can be combined, see \ref{3-features})
+\item Hyper parameter for ridge regression: 0.25, evaluated by experiments
+\item \# of for-loops it takes for learning (with monte carlo): 25, can be more, but may lead to overfitting
+\item Probabilities for decision based on random values / monte carlo: educated guess and experiments
+\end{itemize}
 
 \section{Lessons Learned}
-\textit{What other algorithms, tools or methods did you try out that didn't work well?
-Why do you think they performed worse than what you used for your final submission?}
+The automatic approach saved us a lot of time of manual testing. Even the first very simple automatic selection got us a good result which encouraged us to go on with further optimizations.
+Further improvements
+The algorithm could be improved further, but unfortunately time is about to be up. We figured out that the following things would improve the results:
+\begin{itemize}
+\item Normalization: Currently, normalization is not implemented. This would improve the ridge regression a lot.
+\item More complex feature map / more complex transformations / parametrized transformations: Currently, only simple transformations are implemented (e.g. $log(x1 + x2^2)$ should be $log(a*x1 + b*x2^2)$). This would slow down the algorithm tough, because more parameters would have to be learned.
+\item Stochastic gradient decent instead of greedy gradient decent (to speed up the algorithm)
+\item Use simulated annealing to improve algorithm speed, avoid local minimas and make the algorithm more solid.
+\end{itemize}
+
 
 \end{document} 
