@@ -13,7 +13,7 @@ warning('off', 'all')
 % Define these things for the dynamic features
 inputColumns = 14;
 featureFunctions = 9;
-multiFeatures = 4; % Warning: setting this higher will lead to a slower execution!
+multiFeatures = 15; % Warning: setting this higher will lead to a slower execution!
 
 % split data in features / labels
 X_in = M(:,1:inputColumns);
@@ -32,7 +32,7 @@ bestBinModel = zeros(inputColumns,featureFunctions + (multiFeatures * inputColum
 bestBinModelError = 100000000000000000000;
 foundDuring = 0;
 
-while max < 25
+while max < 12
     max = max + 1
     
     [binModel, ridgeError] = find_next_feature(binModel, X_in, y, hyper_parameter, inputColumns,featureFunctions, multiFeatures);

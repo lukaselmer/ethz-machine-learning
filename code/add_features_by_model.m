@@ -34,6 +34,12 @@ function [ X_n ] = add_features_by_model( X, model, inputColumns, featureFunctio
         if(k==9 && model(j,k) == 1) % 1/x
             X_n = [X_n 1./X(:, j)];
         end
+        if(k==10 && model(j,k) == 1) % sqrt
+            X_n = [X_n X(:, j).^(1/2)];
+        end
+        if(k==11 && model(j,k) == 1) % 3rdroot
+            X_n = [X_n X(:, j).^(1/3)];
+        end
         
         begin = featureFunctions;
         next = begin + inputColumns;
@@ -57,6 +63,72 @@ function [ X_n ] = add_features_by_model( X, model, inputColumns, featureFunctio
         next = begin + inputColumns;
         if(k>begin && k <= next && model(j,k) == 1)
             X_n = [X_n X(:, j).*X(:, k-begin).^3];
+        end
+        
+        begin = next;
+        next = begin + inputColumns;
+        if(k>begin && k <= next && model(j,k) == 1)
+            X_n = [X_n X(:, j).*X(:, k-begin).^1/2];
+        end
+        
+        begin = next;
+        next = begin + inputColumns;
+        if(k>begin && k <= next && model(j,k) == 1)
+            X_n = [X_n (X(:, j).^2).*X(:, k-begin).^1/2];
+        end
+        
+        begin = next;
+        next = begin + inputColumns;
+        if(k>begin && k <= next && model(j,k) == 1)
+            X_n = [X_n (X(:, j).^3).*X(:, k-begin).^1/2];
+        end
+        
+        begin = next;
+        next = begin + inputColumns;
+        if(k>begin && k <= next && model(j,k) == 1)
+            X_n = [X_n (log(X(:, j))).*X(:, k-begin)];
+        end
+        
+        begin = next;
+        next = begin + inputColumns;
+        if(k>begin && k <= next && model(j,k) == 1)
+            X_n = [X_n (log(X(:, j))).*log(X(:, k-begin))];
+        end
+        
+        begin = next;
+        next = begin + inputColumns;
+        if(k>begin && k <= next && model(j,k) == 1)
+            X_n = [X_n ((X(:, j)) + log(X(:, k-begin))).^2];
+        end
+        
+        begin = next;
+        next = begin + inputColumns;
+        if(k>begin && k <= next && model(j,k) == 1)
+            X_n = [X_n ((X(:, j)) + log(X(:, k-begin))).^(1/2)];
+        end
+        
+        begin = next;
+        next = begin + inputColumns;
+        if(k>begin && k <= next && model(j,k) == 1)
+            X_n = [X_n log((X(:, j)) + log(X(:, k-begin)))];
+        end
+        
+        begin = next;
+        next = begin + inputColumns;
+        if(k>begin && k <= next && model(j,k) == 1)
+            X_n = [X_n ((X(:, j)) - log(X(:, k-begin))).^2];
+        end
+        
+        begin = next;
+        next = begin + inputColumns;
+        if(k>begin && k <= next && model(j,k) == 1)
+            X_n = [X_n ((X(:, j)) - log(X(:, k-begin))).^(1/2)];
+        end
+        
+        begin = next;
+        next = begin + inputColumns;
+        if(k>begin && k <= next && model(j,k) == 1)
+            X_n = [X_n log((X(:, j)) - log(X(:, k-begin)))];
         end
         
        % if(k>32 && model(j,k) == 1)% log regression
