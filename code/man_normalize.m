@@ -12,7 +12,7 @@ function [ M ] = man_normalize( M )
     %badRows = [48 88 94 132 302 187];
     %badRows = [134 127 48 270 94 88 132 302 187];
     %badRows = [94 88 132 302 187];
-    badRows = [302 187];
+    badRows = [94 88 132 302 187];
     M = removerows(M, 'ind', badRows);
     
     
