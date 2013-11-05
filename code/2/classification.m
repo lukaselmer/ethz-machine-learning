@@ -17,7 +17,7 @@ Y_training = M(:,end);
 N = size(X_training, 1);
 
 
-nbKD = NaiveBayes.fit(X_training, Y_training, 'dist', 'kernel');
+nbKD = NaiveBayes.fit(X_training, Y_training, 'dist', 'mvmn');
 nbKDClass= nbKD.predict(X_training);
 %bad = ~strcmp(nbKDClass,Y_training);
 %nbKDResubErr = sum(bad)
