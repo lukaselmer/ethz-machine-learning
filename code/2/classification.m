@@ -17,6 +17,10 @@ Y_training = M(:,end);
 N = size(X_training, 1);
 
 
+nbKD = NaiveBayes.fit(X_training, Y_training, 'dist', 'kernel');
+nbKDClass= nbKD.predict(X_training);
+%bad = ~strcmp(nbKDClass,Y_training);
+%nbKDResubErr = sum(bad)
 
 
 % TODO: learn...
@@ -33,8 +37,8 @@ x_validation = validation_data(:,1:end);
 x_testing = testing_data(:,1:end);
 
 
-y_validation = [] % TODO: execute
-y_testing = [] % TODO: execute
+y_validation = nbKD.predict(x_validation); % TODO: execute
+y_testing = nbKD.predict(x_validation); % TODO: execute
 
 
 csvwrite ('../../data/2/validation.out', y_validation);
