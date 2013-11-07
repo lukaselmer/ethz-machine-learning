@@ -18,10 +18,10 @@ multiFeatures = 4; % Warning: setting this higher will lead to a slower executio
 % split data in features / labels
 X_in = M(:,1:inputColumns);
 %y = M(:,15);
-y = M(:,28x);
+y = M(:,28);
 
 hyper_parameter = 0.25;
-max_features = 12;
+max_features = 15;
 binModel = zeros(inputColumns,featureFunctions + (multiFeatures * inputColumns));%18+14=32, 1
 %binModel
 
@@ -33,13 +33,13 @@ bestBinModelError = 100000000000000000000;
 foundDuring = 0;
 
 max = 0;
-while max < 25
+while max < 100
     max = max + 1
     
     [binModel, ridgeError] = find_next_feature(binModel, X_in, y, hyper_parameter, inputColumns,featureFunctions, multiFeatures);
     %binModel
     squaredError = calc_error_of_model(binModel, X_in, y, hyper_parameter, inputColumns,featureFunctions, multiFeatures);
-    ridgeError
+    ridgeError = abs(ridgeError)
     squaredError
     
     if bestBinModelError > ridgeError

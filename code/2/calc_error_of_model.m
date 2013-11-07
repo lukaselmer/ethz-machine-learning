@@ -5,14 +5,14 @@ function [ cv_rsme ] = calc_error_of_model( model, X_in, y_in, hyper_parameter, 
 X = add_features_by_model(X_in, model, inputColumns, featureFunctions, multiFeatures);
 
 %[X, ~, ~] = normalize(X);
-[y, y_mean, y_std] = normalize(y_in);
+%[y, y_mean, y_std] = normalize(y_in);
 
 % add column with ones (for offset)
 %X = [ones(size(X,1),1),X];
             
 y=y_in;
-y_std = 1;
-y_mean = 0;
+%y_std = 1;
+%y_mean = 0;
 %[min_error, min_idx] = min(errors);
 %best_parameter = parameters(min_idx);
 %min_idx
@@ -24,12 +24,13 @@ w = train(X, y, hyper_parameter);
 %calculate error
 y_cmp = y_in;% M(:,15); % y values to calcuate the prediction error
 y_pred = (w' * X')';
-y_pred = (y_pred.*y_std) + y_mean';
+%y_pred = (y_pred.*y_std) + y_mean';
 y_pred(y_pred < 0) = -1;
 y_pred(y_pred >= 0) = 1;
 
-y_avg = mean(y_cmp);
-cv_rsme = sqrt(sum((y_pred - y_cmp).^2) / size(y_cmp, 1)) / y_avg;
+%y_avg = mean(y_cmp);
+%cv_rsme = sqrt(sum((y_pred - y_cmp).^2) / size(y_cmp, 1)) / y_avg;
+cv_rsme = sum(abs(y_pred - y_cmp)./2);
 
 end
 
