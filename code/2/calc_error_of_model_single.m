@@ -25,6 +25,8 @@ w = train(X, y, hyper_parameter);
 y_cmp = y_in;% M(:,15); % y values to calcuate the prediction error
 y_pred = (w' * X')';
 y_pred = (y_pred.*y_std) + y_mean';
+y_pred(y_pred < 0) = -1;
+y_pred(y_pred >= 0) = 1;
 y_diff = (y_pred - y_cmp).^2;
 [B,IX] = sort(y_diff);
 B

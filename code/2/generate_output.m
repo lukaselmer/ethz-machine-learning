@@ -7,8 +7,8 @@ function generate_output( w, y_mean, y_std, model, model_error, inputColumns,fea
     %testing_data = man_normalize(testing_data);
 
     % split data in features / labels
-    x_validation = validation_data(:,1:14);
-    x_testing = testing_data(:,1:14);
+    x_validation = validation_data(:,1:end);
+    x_testing = testing_data(:,1:end);
 
     % add features
     x_validation = add_features_by_model(x_validation, model, inputColumns,featureFunctions, multiFeatures);

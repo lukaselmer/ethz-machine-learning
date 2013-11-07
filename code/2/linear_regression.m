@@ -1,44 +1,115 @@
+clear all
+clc
+
 % read data
-M = csvread('../data/training.csv');
+M = csvread('../../data/2/training.csv');
+M = man_normalize(M);
+
+% Disable warnings
+warning('off', 'MATLAB:nearlySingularMatrix')
+warning('off', 'MATLAB:singularMatrix')
+warning('off', 'all')
+
+% Define these things for the dynamic features
+inputColumns = 27;
+featureFunctions = 9;
+multiFeatures = 4; % Warning: setting this higher will lead to a slower execution!
 
 % split data in features / labels
-x = M(:,1:14);
-y = M(:,15);
+X_in = M(:,1:inputColumns);
+%y = M(:,15);
+y = M(:,28x);
 
-% add features
-x = add_features(x);
+hyper_parameter = 0.25;
+max_features = 12;
+binModel = zeros(inputColumns,featureFunctions + (multiFeatures * inputColumns));%18+14=32, 1
+%binModel
 
-% normalize data
-[x, ~, ~] = normalize(x);
+%model_error = calc_error_of_model(binModel, X_in, y, hyper_parameter);
+%model_error
+
+bestBinModel = zeros(inputColumns,featureFunctions + (multiFeatures * inputColumns));
+bestBinModelError = 100000000000000000000;
+foundDuring = 0;
+
+max = 0;
+while max < 25
+    max = max + 1
+    
+    [binModel, ridgeError] = find_next_feature(binModel, X_in, y, hyper_parameter, inputColumns,featureFunctions, multiFeatures);
+    %binModel
+    squaredError = calc_error_of_model(binModel, X_in, y, hyper_parameter, inputColumns,featureFunctions, multiFeatures);
+    ridgeError
+    squaredError
+    
+    if bestBinModelError > ridgeError
+        bestBinModel = binModel;
+        bestBinModelError = ridgeError;
+        foundDuring = max;
+    end
+    
+    if rand(1) < 0.1
+        binModel = bestBinModel;
+    end
+    
+    %if model_error < 0.19
+    %    break;
+    %end
+    
+    features = sum(sum(binModel));
+    if(features >= max_features)
+        r = rand(1);
+        if(r < 0.475) % 0.475
+            binModel = remove_random_feature(binModel);
+        elseif(r < 0.775) % 0.3
+            binModel = remove_random_feature(binModel);
+            binModel = remove_random_feature(binModel);
+        elseif(r < 0.875) % 0.2
+            binModel = remove_random_feature(binModel);
+            binModel = remove_random_feature(binModel);
+            binModel = remove_random_feature(binModel);
+        elseif(r < 0.975) % 0.1
+            binModel = remove_random_feature(binModel);
+            binModel = remove_random_feature(binModel);
+            binModel = remove_random_feature(binModel);
+            binModel = remove_random_feature(binModel);
+        else % 0.025
+            binModel = remove_random_feature(binModel);
+            binModel = remove_random_feature(binModel);
+            binModel = remove_random_feature(binModel);
+            binModel = remove_random_feature(binModel);
+            binModel = remove_random_feature(binModel);
+        end
+    elseif(rand(1) < 0.05)
+        binModel = remove_random_feature(binModel);
+    elseif(rand(1) < 0.02)
+        binModel = remove_random_feature(binModel);
+        binModel = remove_random_feature(binModel);
+    end
+end
+
+binModel = bestBinModel;
+
+%binModel
+%model_error
+%return;
+% train with best parameter with all training data
+%binModel
+
+squaredError = calc_error_of_model_single(binModel, X_in, y, hyper_parameter, inputColumns,featureFunctions, multiFeatures);
+squaredError
+foundDuring
+
+X = add_features_by_model(X_in, binModel, inputColumns,featureFunctions, multiFeatures);
+
+%[X, ~, ~] = normalize(X);
 [y, y_mean, y_std] = normalize(y);
 
 % add column with ones (for offset)
-x = [ones(size(x,1),1),x];
+X = [ones(size(X,1),1),X];
 
-% cross validation
-parameters = (0:0.01:1)';
-errors = zeros(size(parameters,1), 1);
+w = train(X, y, hyper_parameter);
 
-for i = 1:size(parameters)
-    errors(i) = cross_validation(x,y,parameters(i));
-end
-
-[min_error, min_idx] = min(errors);
-best_parameter = parameters(min_idx);
-min_idx
-min_error
-best_parameter
-% train with best parameter with all training data
-w = train(x, y, best_parameter);
-
-%calculate error
-y_cmp = M(:,15); % y values to calcuate the prediction error
-y_pred = (w'*x')';
-y_pred = (y_pred.*y_std) + y_mean';
-
-y_avg = mean(y_cmp);
-cv_rsme = sqrt(sum((y_pred - y_cmp).^2) / size(y_cmp, 1)) / y_avg;
-cv_rsme
 
 % generate output
-generate_output (w);
+generate_output (w, y_mean, y_std, binModel, squaredError, inputColumns,featureFunctions, multiFeatures);
