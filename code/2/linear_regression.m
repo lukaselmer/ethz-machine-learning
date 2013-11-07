@@ -13,7 +13,7 @@ warning('off', 'all')
 % Define these things for the dynamic features
 inputColumns = 27;
 featureFunctions = 9;
-multiFeatures = 4; % Warning: setting this higher will lead to a slower execution!
+multiFeatures = 0; % Warning: setting this higher will lead to a slower execution!
 
 % split data in features / labels
 X_in = M(:,1:inputColumns);
@@ -21,7 +21,7 @@ X_in = M(:,1:inputColumns);
 y = M(:,28);
 
 hyper_parameter = 0.25;
-max_features = 15;
+max_features = 5;
 binModel = zeros(inputColumns,featureFunctions + (multiFeatures * inputColumns));%18+14=32, 1
 %binModel
 
@@ -32,15 +32,17 @@ bestBinModel = zeros(inputColumns,featureFunctions + (multiFeatures * inputColum
 bestBinModelError = 100000000000000000000;
 foundDuring = 0;
 
+%% Model selection
+
 max = 0;
 while max < 100
     max = max + 1
     
     [binModel, ridgeError] = find_next_feature(binModel, X_in, y, hyper_parameter, inputColumns,featureFunctions, multiFeatures);
     %binModel
-    squaredError = calc_error_of_model(binModel, X_in, y, hyper_parameter, inputColumns,featureFunctions, multiFeatures);
+    %squaredError = calc_error_of_model(binModel, X_in, y, hyper_parameter, inputColumns,featureFunctions, multiFeatures);
     ridgeError = abs(ridgeError)
-    squaredError
+    %squaredError;
     
     if bestBinModelError > ridgeError
         bestBinModel = binModel;
@@ -88,6 +90,8 @@ while max < 100
     end
 end
 
+%% Generate Output
+
 binModel = bestBinModel;
 
 %binModel
@@ -97,7 +101,7 @@ binModel = bestBinModel;
 %binModel
 
 squaredError = calc_error_of_model_single(binModel, X_in, y, hyper_parameter, inputColumns,featureFunctions, multiFeatures);
-squaredError
+%squaredError
 foundDuring
 
 X = add_features_by_model(X_in, binModel, inputColumns,featureFunctions, multiFeatures);

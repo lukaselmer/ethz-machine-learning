@@ -17,7 +17,8 @@ function [ X_n ] = add_features_by_model( X, model, inputColumns, featureFunctio
             X_n = [X_n X(:, j)];
         end
         if(k==5 && model(j,k) == 1) % loglog
-            X_n = [X_n log(log(X(:, j)))];
+            %X_n = [X_n log(log(X(:, j)))];
+            X_n = [X_n (log(X(:, j)))];
         end
         if(k==6 && model(j,k) == 1) % e^
             X_n = [X_n exp(X(:, j))];
