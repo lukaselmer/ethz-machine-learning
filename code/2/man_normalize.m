@@ -9,8 +9,8 @@ function [ M ] = man_normalize( M )
     %M(:,16) = M(:,15);
     
     %badRows = [48 206 94 134 12 132 302 88 187];
-    badRows = [48 88 94 132 302 187];
-    M = removerows(M, 'ind', badRows);
+    %badRows = [48 88 94 132 302 187];
+    %M = removerows(M, 'ind', badRows);
     
     
     

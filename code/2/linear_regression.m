@@ -35,7 +35,7 @@ foundDuring = 0;
 %% Model selection
 
 max = 0;
-while max < 100
+while max < 10000
     max = max + 1
     
     [binModel, ridgeError] = find_next_feature(binModel, X_in, y, hyper_parameter, inputColumns,featureFunctions, multiFeatures);
