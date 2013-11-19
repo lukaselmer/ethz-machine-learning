@@ -18,19 +18,48 @@ y_train_test = train_test_data(:,28);
 
 %% cross validation
 %% random cross validation
-min_error = 0.112610;
-best_sigma = 0.539343;
-best_c = 1.032748;
+out_error = 0.12;
+min_error = 0.110000;
+best_sigma = 0.556201641;
+best_c = 1.316157273;
+
+% error: 0.110000 sigma: 0.741561491 c: 9.820265117
+% error: 0.112610 sigma: 0.539343    c: 1.162347
+% error: 0.116188 sigma: 0.809714762 c: 5.609376671
+% error: 0.116830 sigma: 0.713188289 c: 21.681477620
+% error: 0.117462 sigma: 0.837775254 c: 94.774819336
+% error: 0.117510 sigma: 0.534608    c: 1.833623
+% error: 0.117548 sigma: 0.660176016 c: 200.472571424
+% error: 0.118166 sigma: 0.556201641 c: 1.316157273
+% error: 0.118190 sigma: 0.548186    c: 1.070160
+% error: 0.118760 sigma: 0.792902199 c: 256.804165103
+% error: 0.118942 sigma: 0.665753253 c: 57.866211899
+% error: 0.119550 sigma: 0.528402    c: 1.594627
+% error: 0.119559 sigma: 0.672394589 c: 5.477502294
+
 for i = 1:0  
-    sigma = rand()*0.1+0.5;
-    c = rand()*0.2+1;
-    error = cross_validation (x_train, y_train, sigma, c);
-    if (error < min_error) 
-       min_error = error;
-       best_sigma = sigma;
-       best_c = c;
-       fprintf('error: %1.6f sigma: %1.6f c: %1.6f\n', error, sigma, c);
+    
+    sigma = rand() * 0.1 + 0.5;
+    c     = rand() * 0.4   + 1;
+    
+    %sigma = rand() * 0.4 + 0.5;
+    %c     = 2^(rand() * 16 - 7);
+    
+    try 
+        error = cross_validation (x_train, y_train, sigma, c);
+        if (error < min_error) 
+           min_error = error;
+           best_sigma = sigma;
+           best_c = c;
+           fprintf('--- error: %1.6f sigma: %1.9f c: %1.9f ---\n', error, sigma, c);
+        end
+        if (error < out_error)
+           fprintf('error: %1.6f sigma: %1.9f c: %1.9f\n', error, sigma, c);
+        end
+    catch
+        fprintf('warning: error: %1.6f sigma: %1.9f c: %1.9f\n', error, sigma, c);
     end
+    
 end
 
 %% grid search cross validation
@@ -66,8 +95,8 @@ SVMstruct = svmtrain(x_train, y_train, 'Kernel_Function', 'rbf', 'rbf_sigma', be
 %% prediction
 % predict label of unused training_data
 predicted__train_data_label = svmclassify(SVMstruct,x_train_test);
-train_data_error = calc_error (predicted__train_data_label, y_train_test);
-% calc_grade (train_data_error)
+train_data_error = calc_error (predicted__train_data_label, y_train_test)
+calc_grade (train_data_error);
 
 % predict label of validation data
 x_validation = csvread('../../data/2/validation.csv');
