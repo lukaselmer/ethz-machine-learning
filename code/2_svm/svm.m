@@ -10,9 +10,12 @@ y_train = training_data(:,28);
 %% cross validation
 %% random cross validation
 out_error = 0.12;
-min_error = 0.110000;
+% min_error = 0.110651;
+min_error = 1;
 best_sigma = 0.539343;
+sigma = best_sigma;
 best_c = 1.162347;
+c = best_c;
 
 
 % error: 0.110000 sigma: 0.741561491 c: 9.820265117
@@ -39,16 +42,33 @@ best_c = 1.162347;
 % error: 0.116078 sigma: 0.546222230 c: 1.236622461
 % valid: 0.14858327574291638 error: 0.110651 sigma: 0.562775896 c: 1.058211034
 
-for i = 1:0  
+%% Train
+
+for i = 1:20 
+    if(rand() < 0.5)
+        sigma = sigma + ((rand() - 0.5) * 2);
+    else
+        c     = abs(c + ((rand() - 0.5) * 6));
+    end
     
-    sigma = rand() * 0.1 + 0.5;
-    c     = rand() * 0.4   + 1;
+    if(rand() < 0.15)
+        sigma = best_sigma;
+    end
+    if(rand() < 0.15)
+        c = best_c;
+    end
+    if(rand() < 0.05)
+        sigma = best_sigma;
+        c = best_c;
+    end
+    
     
     %sigma = rand() * 0.4 + 0.5;
     %c     = 2^(rand() * 16 - 7);
     
     try 
-        error = cross_validation (x_train_full, y_train_full, sigma, c);
+        error = cross_validation (x_train, y_train, sigma, c);
+        error
         if (error < min_error) 
            min_error = error;
            best_sigma = sigma;
@@ -106,7 +126,7 @@ calc_grade (train_data_error);
 
 %% training
 % train with best parameter with all training data
-SVMstruct = svmtrain(x_train_full, y_train_full, 'Kernel_Function', 'rbf', 'rbf_sigma', best_sigma, 'boxconstraint', best_c);
+SVMstruct = svmtrain(x_train, y_train, 'Kernel_Function', 'rbf', 'rbf_sigma', best_sigma, 'boxconstraint', best_c);
 
 %% prediction
 % predict label of validation data
