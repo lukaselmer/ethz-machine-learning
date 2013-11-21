@@ -28,5 +28,6 @@ function [ error ] = cross_validation(x, y, sigma, c)
     end
     
     error = mean(errors);
+    fprintf('max=%f, median=%f, mean=%f, min=%f\n', max(errors), median(errors), mean(errors), min(errors));
 end
 
