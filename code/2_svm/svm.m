@@ -6,18 +6,24 @@ clc
 training_data = csvread('../../data/2/training.csv');
 [m, ~] = size(training_data);
 
+badRows = [59];
+training_data = removerows(training_data, 'ind', badRows);
+
 % split data in features / labels
 x_train = preprocess((training_data(:,1:(end-1))));
 y_train = training_data(:,end);
+[x_train, y_train] = add_jitter(x_train, y_train);
 
 % visualize data
 visualize (x_train, y_train);
 
 %% train
 % cross validation
+%best_sigma = 0.556201641;
 best_sigma = 0.556201641;
 best_c = 1.316157273;
-% [best_sigma, best_c] = train_random(x_train, y_train);
+%best_c = 1.19;
+%[best_sigma, best_c] = train_random(x_train, y_train, best_sigma, best_c);
 % [best_sigma, best_c] = train_grid(x_train, y_train);
 
 
