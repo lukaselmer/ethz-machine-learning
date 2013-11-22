@@ -9,9 +9,9 @@ function [  ] = visualize( x, y )
     positive_y = y (idx_pos,1:end-1);
     negative_y = y (idx_neg,1:end-1);
 
-    hold on;
-    plot (positive_x(:,2), positive_x(:,3), 'g.');
-    plot (negative_x(:,2), negative_x(:,3), 'r.');
+    %hold on;
+    %plot (positive_x(:,1), positive_x(:,1), 'g.');
+    %plot (negative_x(:,1), negative_x(:,1), 'r*');
 
 end
 
