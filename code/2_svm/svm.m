@@ -7,7 +7,7 @@ training_data = csvread('../../data/2/training.csv');
 [m, ~] = size(training_data);
 
 % split data in features / labels
-x_train = preprocess(training_data(:,1:(end-1)));
+x_train = preprocess((training_data(:,1:(end-1))));
 y_train = training_data(:,end);
 
 % visualize data
@@ -37,11 +37,11 @@ csvwrite ('../../data/2/best_c_svm.out', best_c);
 % prediction
 % predict label of validation data
 x_validation = preprocess(csvread('../../data/2/validation.csv'));
-predicted_validation_label = svmclassify(SVMstruct, x_validation);
+predicted_validation_label = predict(SVMstruct, x_validation);
 csvwrite ('../../data/2/validation_svm.out', predicted_validation_label);
 
 % predict label of test data
 x_test = preprocess(csvread('../../data/2/testing.csv'));
-predicted_test_label = svmclassify(SVMstruct,x_test);
+predicted_test_label = predict(SVMstruct,x_test);
 csvwrite ('../../data/2/testing_svm.out', predicted_test_label);
 

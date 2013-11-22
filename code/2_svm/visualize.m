@@ -10,8 +10,8 @@ function [  ] = visualize( x, y )
     negative_y = y (idx_neg,1:end-1);
 
     hold on;
-    plot (positive_x(:,1), positive_x(:,4), 'g.');
-    plot (negative_x(:,1), negative_x(:,4), 'r.');
+    plot (positive_x(:,2), positive_x(:,3), 'g.');
+    plot (negative_x(:,2), negative_x(:,3), 'r.');
 
 end
 
