@@ -1,7 +1,6 @@
 function [ Xpre ] = preprocess( X )
-%PREPROCESS Preprocesses the input data 
-%   Detailed explanation goes here
-    Xpre = X;
+    
+    Xpre = log (log(X+2) +2);
 
 end
 

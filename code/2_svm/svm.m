@@ -10,6 +10,9 @@ training_data = csvread('../../data/2/training.csv');
 x_train = preprocess(training_data(:,1:(end-1)));
 y_train = training_data(:,end);
 
+% visualize data
+visualize (x_train, y_train);
+
 %% train
 % cross validation
 best_sigma = 0.556201641;
