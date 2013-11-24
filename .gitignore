@@ -6,3 +6,4 @@ report.out
 
 *.out~
 ~$validation_errors.xlsx
+code/2_svm/svmtrain2.asv

@@ -9,7 +9,7 @@ function [ train_data_error ] = estimate_error( training_data, sigma, c )
     estimate_test_y  = estimate_test_data(:,end);
     
     % train
-    SVMstruct = svmtrain(estimate_train_x, estimate_train_y, 'Kernel_Function', 'rbf', 'rbf_sigma', sigma, 'boxconstraint', c);
+    SVMstruct = svmtrain2(estimate_train_x, estimate_train_y, sigma, c);
     
     % predict
     predicted__train_data_label = predict(SVMstruct, estimate_test_x);

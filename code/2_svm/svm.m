@@ -15,7 +15,7 @@ y_train = training_data(:,end);
 [x_train, y_train] = add_jitter(x_train, y_train);
 
 % visualize data
-visualize (x_train, y_train);
+%visualize (x_train, y_train);
 
 %% train
 % cross validation
@@ -35,7 +35,7 @@ estimated_error = estimate_error (training_data, best_sigma, best_c)
 
 %% training / prediction
 % train with best parameter with all training data
-SVMstruct = svmtrain(x_train, y_train, 'Kernel_Function', 'rbf', 'rbf_sigma', best_sigma, 'boxconstraint', best_c);
+SVMstruct = svmtrain2(x_train, y_train, best_sigma, best_c);
 
 csvwrite ('../../data/2/best_sigma_svm.out', best_sigma);
 csvwrite ('../../data/2/best_c_svm.out', best_c);

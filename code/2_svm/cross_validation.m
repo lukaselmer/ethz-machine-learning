@@ -16,7 +16,7 @@ function [ error ] = cross_validation(x, y, sigma, c)
         y_train = y(train_idx,:);
 
         % train
-        SVMstruct = svmtrain(x_train, y_train, 'Kernel_Function', 'rbf', 'rbf_sigma', sigma, 'boxconstraint', c);
+        SVMstruct = svmtrain2(x_train, y_train, sigma, c);
 
         % get test data
         x_test = x(test_idx,:);
