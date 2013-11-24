@@ -23,7 +23,7 @@ function [ error ] = cross_validation(x, y, sigma, c)
         y_test = y(test_idx,:);
         
         % calculate error
-        predicted_label = svmclassify (SVMstruct, x_test);
+        predicted_label = predict (SVMstruct, x_test);
         errors(i) = calc_error(predicted_label, y_test); %calc_error 
     end
     

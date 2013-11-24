@@ -1,11 +1,11 @@
-function [ best_sigma, best_c ] = train_random ( x_train, y_train )
+function [ best_sigma, best_c ] = train_random ( x_train, y_train, best_sigma, best_c )
     
     % random cross validation
     out_error = 0.12;
     % min_error = 0.110651;
     min_error = 0.115;
-    best_sigma = 0.556201641;
-    best_c = 1.316157273;
+    %best_sigma = 0.556201641;
+    %best_c = 1.316157273;
 
 
     sigma = best_sigma;
