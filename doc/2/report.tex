@@ -28,9 +28,9 @@
 
 \section*{Experimental Protocol}
 Usage:\\
-Download the csv files to /data/....csv (... = training, testing, validation)\\
+Download the csv files to /data/2/....csv (... = training, testing, validation)\\
 Run svm.m \\
-Results are in /data/....out (... = training, testing, validation)
+Results are in /data/2/....out (... = training, testing, validation)
 
 \section{Tools}
 
@@ -46,22 +46,41 @@ Results are in /data/....out (... = training, testing, validation)
 \label{sec:Algorithm}
 For training the Support Vector Machine we used the \textit{svmtrain}\footnote{http://www.mathworks.ch/ch/help/stats/svmtrain.html} function from the Statistics Toolbox of Matlab. And for classification of new data we used \textit{svmclassify}\footnote{http://www.mathworks.ch/ch/help/stats/svmclassify.html}, which is also a function of the Statistics Toolbox.
 
-These two built-in function form the core of the algorithm. To improve the results, we added an additional pre process step to alter the input data before we give them to \textit{svmtrain}.
+These two built-in function form the core of the algorithm. To improve the results, we added an additional pre process step to alter the input data before we give them to \textit{svmtrain}, see \ref{sec:Features} \nameref{sec:Features}.
 \section{Features}
 \label{sec:Features}
 
+Because we use the Gaussian Radial Basis Function as a kernel for the SVM, it is difficult to interpret the features and their importance for the prediction. However, experiments showed that the features can be transformed before using the SVM. The formula to transform the features is the following:
+For the features $f_{i}$ we do the following transformations (i starts at 1):
+\begin{itemize}
+\item $f'_{i}=log(log(f_{i} + 2.00001) + 0.22)$ where $i\ \%\ 3=1$
+\item $f'_{i}=log(log(f_{i} + 2.00001) + 0.22)$ where $i\ \%\ 3=2$
+\item $f'_{i}=log(log(f_{i} + 1000.0))$ where $i\ \%\ 3=0$
+\end{itemize}
+
+Ignoring features $f_{i}$ where $i\ \%\ 3=1$, the estimated error is 0.4715. Using the same procedure, for $i\ \%\ 3=2$ and $i\ \%\ 3=0$ the estimated error is 0.2683 and 0.1829 respectively. Thus, the features $f_{i}$ where $i\ \%\ 3=1$ seem to be the most important ones.
 
 \section{Parameters}
 \label{sec:Parameters}
 The support vector machine with the Gaussian Radial Basis Function as kernel, takes 2 parameters: The box constraint C for the soft margin, and a scaling factor $\sigma$.\\
-To find the optimal values for these parameters we first used Grid search, to narrow down the range to $\sigma \in [0.5, 0.6]$ and $C \in [1, 1.2]$.\\
-Second, we randomly search in these ranges for the best values which resulted in following values:\\
+To find the optimal values for these parameters we first used grid search, to narrow down the range to $\sigma \in [0.5, 0.6]$ and $C \in [1, 1.2]$.\\
+Second, we randomly searched in these ranges for the best values which resulted in following values:
+
 \begin{itemize}
 \item $\sigma=0.556201641$
 \item $C=1.316157273$
 \end{itemize}
 
 \section{Lessons Learned}
+
+Even tough many classification algorithms exist, it is difficult to use them out of the box. Even tough there is some documentation, it is often brief, doesn't cover corner cases, or is out of date. For this reason, after playing with Weka\footnote{http://www.cs.waikato.ac.nz/ml/weka/}, and scikit-learn\footnote{http://scikit-learn.org/stable/index.html}, Spider\footnote{http://people.kyb.tuebingen.mpg.de/spider/}, Shogun\footnote{http://www.shogun-toolbox.org/}, libsvm\footnote{http://www.csie.ntu.edu.tw/~cjlin/libsvm/} and many others, we chose to use the Matlab Statistics Toolbox\footnote{http://www.mathworks.ch/ch/help/stats/support-vector-machines.html}.
+
+Also, many different algorithms have been tried, and the SVM with the Gaussian Radial Basis Function as kernel seems to be the best one. However, some more things which could be done would be:
+\begin{itemize}
+\item Preprocess datapoints and preclassify them, then use different classifiers for each class.
+\item Use multiple classifiers and then use ensemble methods (voting).
+\item Test more / combined kernel functions.
+\end{itemize}
 
 
 \end{document} 
