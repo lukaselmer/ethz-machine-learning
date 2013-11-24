@@ -46,6 +46,7 @@ Results are in /data/....out (... = training, testing, validation)
 \label{sec:Algorithm}
 For training the Support Vector Machine we used the \textit{svmtrain}\footnote{http://www.mathworks.ch/ch/help/stats/svmtrain.html} function from the Statistics Toolbox of Matlab. And for classification of new data we used \textit{svmclassify}\footnote{http://www.mathworks.ch/ch/help/stats/svmclassify.html}, which is also a function of the Statistics Toolbox.
 
+These two built-in function form the core of the algorithm. To improve the results, we added an additional pre process step to alter the input data before we give them to \textit{svmtrain}.
 \section{Features}
 \label{sec:Features}
 
