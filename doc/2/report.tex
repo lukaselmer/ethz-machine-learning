@@ -1,0 +1,66 @@
+\documentclass[a4paper, 11pt]{article}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage[pdftex]{hyperref}
+\usepackage[a4paper]{geometry}
+\usepackage{hyperref}
+
+% Lengths and indenting
+\setlength{\textwidth}{16.5cm}
+\setlength{\marginparwidth}{1.5cm}
+\setlength{\parindent}{0cm}
+\setlength{\parskip}{0.15cm}
+\setlength{\textheight}{22cm}
+\setlength{\oddsidemargin}{0cm}
+\setlength{\evensidemargin}{\oddsidemargin}
+\setlength{\topmargin}{0cm}
+\setlength{\headheight}{0cm}
+\setlength{\headsep}{0cm}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+\title{Machine Learning 2013: Project 2 - SVM Report}
+\author{anufer@student.ethz.ch\\ elmerl@student.ethz.ch\\ nivo@student.ethz.ch\\}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section*{Experimental Protocol}
+Usage:\\
+Download the csv files to /data/....csv (... = training, testing, validation)\\
+Run svm.m \\
+Results are in /data/....out (... = training, testing, validation)
+
+\section{Tools}
+
+\begin{itemize}
+\item Matlab (code is in /code/ directory)
+\item Git / \href{https://github.com/lukaselmer/ethz-machine-learning}{Github Repository} \footnote{https://github.com/lukaselmer/ethz-machine-learning}
+  %\begin{itemize}
+    % item \href{https://github.com/lukaselmer/ethz-machine-learning/releases/tag/best\_v3}{Final solution} \footnote{https://github.com/lukaselmer/ethz-machine-learning/releases/tag/best\_v3} (tag best\_v3, master branch, code attached in the zip file) 
+  %\end{itemize}
+\end{itemize}
+
+\section{Algorithm}
+\label{sec:Algorithm}
+For training the Support Vector Machine we used the \textit{svmtrain}\footnote{http://www.mathworks.ch/ch/help/stats/svmtrain.html} function from the Statistics Toolbox of Matlab. And for classification of new data we used \textit{svmclassify}\footnote{http://www.mathworks.ch/ch/help/stats/svmclassify.html}, which is also a function of the Statistics Toolbox.
+
+\section{Features}
+\label{sec:Features}
+
+
+\section{Parameters}
+\label{sec:Parameters}
+The support vector machine with the Gaussian Radial Basis Function as kernel, takes 2 parameters: The box constraint C for the soft margin, and a scaling factor $\sigma$.\\
+To find the optimal values for these parameters we first used Grid search, to narrow down the range to $\sigma \in [0.5, 0.6]$ and $C \in [1, 1.2]$.\\
+Second, we randomly search in these ranges for the best values which resulted in following values:\\
+\begin{itemize}
+\item $\sigma=0.556201641$
+\item $C=1.316157273$
+\end{itemize}
+
+\section{Lessons Learned}
+
+
+\end{document} 
