@@ -1,4 +1,4 @@
-function [ y ] = predict( X, classesWithCountries, p, P )
+function [ y ] = predict( X, classesWithCountries, p, P, overrideY )
 %PREDICT Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -11,13 +11,17 @@ for l=1:size(X,1)
         if next(k) == 1
             p_L6 = p_L6.* p(:,k, 1);
         else
-            p_L6 = p_L6.* p(:,k, 2);%(1-p(:1,k));
+            p_L6 = p_L6.* (1 - p(:,k));
         end
     end
     
     [maxVal, maxIdx] = max(p_L6);
-    
-    y(l,:) = classesWithCountries(maxIdx, :);
+    if overrideY(l) ~= 0
+        ovrIdx = classesWithCountries(:,1) == overrideY(l)
+        y(l,:) = classesWithCountries(ovrIdx, :);
+    else
+        y(l,:) = classesWithCountries(maxIdx, :);
+    end
 end
 
 

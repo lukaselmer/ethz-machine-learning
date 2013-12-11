@@ -39,10 +39,9 @@ namespace ML_3
             var grouped = data.GroupBy(x => x.Plz);
             var a = grouped.Select(x => new { Plz = x.Key, Stat = GetStat(x) });
             //a = a.Take(5);
-            var topWords = a.SelectMany(x => x.Stat.Keys).Distinct();
+            var topWords = a.SelectMany(x => x.Stat.Keys).Distinct().OrderBy(s=>s);
 
-           // File.WriteAllLines(outPath, topWords);
-            WriteAssingmentTable(data, topWords, outPath);
+            File.WriteAllLines(outPath, topWords);
             return topWords;
         }
 
@@ -51,7 +50,9 @@ namespace ML_3
             int entryCount = group.Count();
             var allwords = group.SelectMany(x => x.Text.ToLower().Split(' '));
             return allwords.GroupBy(x => x).Select(x => new { Text = x.Key, Count = x.Count() })
-                .OrderByDescending(x => x.Count).Take(10).Where(x => (double)x.Count / entryCount > 0.1)
+                .OrderByDescending(x => x.Count)
+                .Where(x=>x.Text.Length > 1)
+                .Take(25).Where(x => (double)x.Count / entryCount > 0.1)
                 .ToDictionary(x => x.Text, x => (double)x.Count / entryCount);
             throw new NotImplementedException();
         }

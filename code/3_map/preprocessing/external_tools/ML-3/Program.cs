@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualBasic.FileIO;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,17 +15,25 @@ namespace ML_3
             
             var wp = new WordPrinter();
 
-            var data = wp.PreFilter(ReadFile("../../../../../../../data/3/corrected_training.csv"));
-            var wordList = wp.PrintTopWords(data, "../../../../X_training.txt");
-            wp.WriteYTable(data, "../../../../Y_training.txt");
-            wp.WriteClassesTable(data, "../../../../classes.txt");
+            var data = Helper.ReadFile("../../../../../../../data/3/corrected_training.csv");
+            data = Preprocessor.Filter(data);
 
+            var wordList = wp.PrintTopWords(data, "../../../../wordlist.txt");
+            //var wordList = File.ReadAllLines("../../../../wordlist.txt");
+            Helper.WriteXMatrix(data, wordList, "../../../../X_training.txt");
+            Helper.WriteYMatix(data, "../../../../Y_training.txt");
+            Helper.WriteClassesMatix(data, "../../../../classes.txt");
+            Helper.WriteOverride(data, "../../../../override_training.txt");
 
-            data = ReadFile("../../../../../../../data/3/corrected_validation.csv");
-            wp.WriteAssingmentTable(data, wordList, "../../../../X_validation.txt");
+            data = Helper.ReadFile("../../../../../../../data/3/corrected_validation.csv");
+            data = Preprocessor.Filter(data);
+            Helper.WriteXMatrix(data, wordList, "../../../../X_validation.txt");
+            Helper.WriteOverride(data, "../../../../override_validation.txt");
 
-            data = ReadFile("../../../../../../../data/3/corrected_testing.csv");
-            wp.WriteAssingmentTable(data, wordList, "../../../../X_testing.txt");
+            data = Helper.ReadFile("../../../../../../../data/3/corrected_testing.csv");
+            data = Preprocessor.Filter(data);
+            Helper.WriteXMatrix(data, wordList, "../../../../X_testing.txt");
+            Helper.WriteOverride(data, "../../../../override_testing.txt");
 
             //return;
             //var grouped = data.GroupBy(x => x.Plz);
