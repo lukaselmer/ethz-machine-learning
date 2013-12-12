@@ -12,11 +12,13 @@ namespace ML_3
     {
         static void Main(string[] args)
         {
-            
+       //     Console.WriteLine(Preprocessor.LevenshteinDistance("ckjyjljnehbycrbv", "ckjyjljnthbycrbv"));
+
             var wp = new WordPrinter();
 
             var data = Helper.ReadFile("../../../../../../../data/3/corrected_training.csv");
-            data = Preprocessor.Filter(data);
+            var levenList = Preprocessor.BuildLevenList(data);
+            data = Preprocessor.Filter(data, levenList);
 
             var wordList = wp.PrintTopWords(data, "../../../../wordlist.txt");
             //var wordList = File.ReadAllLines("../../../../wordlist.txt");
@@ -24,14 +26,14 @@ namespace ML_3
             Helper.WriteYMatix(data, "../../../../Y_training.txt");
             Helper.WriteClassesMatix(data, "../../../../classes.txt");
             Helper.WriteOverride(data, "../../../../override_training.txt");
-
+           // return;
             data = Helper.ReadFile("../../../../../../../data/3/corrected_validation.csv");
-            data = Preprocessor.Filter(data);
+            data = Preprocessor.Filter(data, levenList);
             Helper.WriteXMatrix(data, wordList, "../../../../X_validation.txt");
             Helper.WriteOverride(data, "../../../../override_validation.txt");
 
             data = Helper.ReadFile("../../../../../../../data/3/corrected_testing.csv");
-            data = Preprocessor.Filter(data);
+            data = Preprocessor.Filter(data, levenList);
             Helper.WriteXMatrix(data, wordList, "../../../../X_testing.txt");
             Helper.WriteOverride(data, "../../../../override_testing.txt");
         }
