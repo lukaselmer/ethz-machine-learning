@@ -16,5 +16,12 @@ namespace ML_3
                 yield return item;
             }
         }
+
+        internal IEnumerable<InEntry> PreFilter(IEnumerable<InEntry> data)
+        {
+            return data.OrderBy(e => e.Plz).ToList();
+            //return data.Take(100);
+          //  return data.GroupBy(d => d.Plz).Take(10).SelectMany(g => g);
+        }
     }
 }

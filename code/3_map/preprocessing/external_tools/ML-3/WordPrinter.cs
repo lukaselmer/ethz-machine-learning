@@ -14,25 +14,6 @@ namespace ML_3
            
         }
 
-        internal IEnumerable<InEntry> PreFilter(IEnumerable<InEntry> data)
-        {
-            return data.OrderBy(e=>e.Plz).ToList();
-            //return data.Take(100);
-            return data.GroupBy(d => d.Plz).Take(10).SelectMany(g => g);
-        }
-
-        internal void WriteYTable(IEnumerable<InEntry> data, string outPath)
-        {
-            File.WriteAllLines(outPath, data.Select(x => x.Plz.ToString() + "," + x.Country.ToString()));
-         //   File.WriteAllLines("y.txt", data.Select(x => x.Plz.ToString()));
-        }
-        internal void WriteClassesTable(IEnumerable<InEntry> data, string outPath)
-        {
-            var cities = data.GroupBy(x => x.Plz);
-            var cityCountries = cities.Select(c => c.Key.ToString() + "," + c.GroupBy(e => e.Country).OrderByDescending(g => g.Count()).First().Key.ToString());
-            File.WriteAllLines(outPath, cityCountries);
-       //     File.WriteAllLines("classes.txt", data.Select(e=>e.Plz.ToString()).Distinct());
-        }
 
         internal IEnumerable<string> PrintTopWords(IEnumerable<InEntry> data, string outPath)
         {
@@ -63,28 +44,8 @@ namespace ML_3
             File.WriteAllLines("allwords.txt", words);
 
 
-            WriteAssingmentTable(data, words,"X.txt");
-            
+  
         }
 
-        public void WriteAssingmentTable(IEnumerable<InEntry> data, IEnumerable<String> words, string outPath)
-        {
-            var wordList = words.ToList();
-            var assignedData = data.Select(x => Assign(x.Text.ToLower().Split(' '), wordList));
-            var strTab = assignedData.Select(x => x.Select(x2=>x2.ToString()).Aggregate((z, y) => z + ", " + y));
-            File.WriteAllLines(outPath, strTab);
-        }
-
-        private int[] Assign(String[] sentence, List<String> wordList)
-        {
-            int[] result = new int[wordList.Count];
-            foreach (var word in sentence)
-            {
-                int index = wordList.FindIndex(w => w == word);
-                if (index >= 0)
-                    result[index] = 1;
-            }
-            return result;
-        }
     }
 }
