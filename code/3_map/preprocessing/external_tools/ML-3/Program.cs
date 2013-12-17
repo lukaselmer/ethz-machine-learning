@@ -16,7 +16,7 @@ namespace ML_3
 
             var wp = new WordPrinter();
 
-            var data = Helper.ReadFile("../../../../../../../data/3/corrected_training.csv");
+            var data = Helper.ReadFile("../../../../../../../data/3/corrected_training_fixed.csv");
             var levenList = Preprocessor.BuildLevenList(data);
             data = Preprocessor.Filter(data, levenList);
 
