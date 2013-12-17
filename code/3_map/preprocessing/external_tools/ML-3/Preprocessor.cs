@@ -6,19 +6,87 @@ using System.Threading.Tasks;
 
 namespace ML_3
 {
+
     class Preprocessor
     {
+        class Hood
+        {
+            public List<string> words;
+
+            public Hood(string word)
+            {
+                words = new List<string>();
+                words.Add(word);
+            }
+
+            public string getAverageWord()
+            {
+                string best_word = words.First();
+                double best_avg = double.PositiveInfinity;
+
+                foreach (var word in words)
+                {
+                    double sum = 0;
+                    foreach (var word2 in words)
+                    {
+                        sum += EditDistance(word, word2);
+                    }
+                    double avg = sum / (words.Count - 1);
+                    if (avg < best_avg)
+                    {
+                        best_avg = avg;
+                        best_word = word;
+                    }
+                }
+
+                //return words.First();
+                return best_word;
+            }
+
+            public bool isInHood(string word)
+            {
+                foreach (var hood_word in words)
+                {
+                    if (IsReplacement(word, hood_word))
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+
         internal static List<string> BuildLevenList(IEnumerable<InEntry> data)
         {
             var allwords = data.SelectMany(x => x.Text.ToLower().Split(' '));
             var top100Words = allwords.GroupBy(s => s).OrderByDescending(s => s.Count()).Where(s => s.Key.Length > 4).Take(400);
             var t1000 = top100Words.Select(g => new { Word = g.Key, Count = g.Count() }).ToList();
             List<string> filteredTopWords = new List<string>(200);
+
+            List<Hood> hoods = new List<Hood>();
+
             foreach (var word in t1000)
             {
-                var replacemnt = filteredTopWords.Find(w => IsReplacement(w, word.Word));
-                if (replacemnt == null)
-                    filteredTopWords.Add(word.Word);
+                bool hood_found = false;
+                foreach (var hood in hoods)
+                {
+                    hood_found = hood.isInHood(word.Word);
+                    if (hood_found)
+                    {
+                        hood.words.Add(word.Word);
+                        break;
+                    }
+                }
+
+                if (!hood_found)
+                {
+                    hoods.Add(new Hood(word.Word));
+                }
+            }
+
+            foreach (var hood in hoods)
+            {
+                filteredTopWords.Add(hood.getAverageWord());
             }
 
             return filteredTopWords;
@@ -29,7 +97,7 @@ namespace ML_3
             var len = Math.Max(w1.Length, w2.Length);
             var levenshteinDistance = EditDistance(w1, w2);
             var percentage = (1.0 - (levenshteinDistance / (double)len));
-            return percentage >= 0.7;
+            return percentage >= 0.85;
         }
 
         internal static IEnumerable<InEntry> Filter(IEnumerable<InEntry> data, List<string> filteredTopWords)
@@ -42,7 +110,7 @@ namespace ML_3
                 item.Text = item.Text.ToLower().Replace("\"", "$");
                 item.Text = item.Text.Split(' ')
                     .Select(w => filteredTopWords.Find(q => IsReplacement(q, w)) ?? w) // look if word W can be replaced by a top word, if not return the original word W
-                    .Aggregate((x, y) => x + " " + y);
+                        .Aggregate((x, y) => x + " " + y);
                 yield return item;
             }
         }
@@ -99,11 +167,9 @@ namespace ML_3
                         d[i, j] = Math.Min(Math.Min(
                             d[i - 1, j] + 1,    //a deletion
                             d[i, j - 1] + 1),   //an insertion
-                            d[i - 1, j - 1] + 1 //a substitution
-                            );
+                                           d[i - 1, j - 1] + 1 //a substitution
+                                           );
             return d[s.Length, t.Length];
         }
-
-
     }
 }
