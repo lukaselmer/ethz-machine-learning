@@ -11,7 +11,7 @@ namespace ML_3
         internal static List<string> BuildLevenList(IEnumerable<InEntry> data)
         {
             var allwords = data.SelectMany(x => x.Text.ToLower().Split(' '));
-            var top100Words = allwords.GroupBy(s => s).OrderByDescending(s => s.Count()).Where(s => s.Key.Length > 4).Take(500);
+            var top100Words = allwords.GroupBy(s => s).OrderByDescending(s => s.Count()).Where(s => s.Key.Length > 4).Take(400);
             var t1000 = top100Words.Select(g => new { Word = g.Key, Count = g.Count() }).ToList();
             List<string> filteredTopWords = new List<string>(200);
             foreach (var word in t1000)
@@ -27,7 +27,7 @@ namespace ML_3
         private static bool IsReplacement(string w1, string w2)
         {
             var len = Math.Max(w1.Length, w2.Length);
-            var levenshteinDistance = LevenshteinDistance(w1, w2);
+            var levenshteinDistance = EditDistance(w1, w2);
             var percentage = (1.0 - (levenshteinDistance / (double)len));
             return percentage >= 0.7;
         }
