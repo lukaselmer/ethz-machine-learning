@@ -7,41 +7,48 @@ using System.Threading.Tasks;
 namespace ML_3
 {
 	
-	
 	class Preprocessor
 	{
-		class Hood {
+		class Hood
+		{
 			public List<string> words;
 			
-			public Hood (string word)
+			public Hood(string word)
 			{
 				words = new List<string>();
-				words.Add (word);
+				words.Add(word);
 			}
 			
-			public string getAverageWord() {
-				string best_word = "";
+			public string getAverageWord()
+			{
+				string best_word = words.First();
 				double best_avg = double.PositiveInfinity;
 				
-				foreach (var word in words) {
+				foreach (var word in words)
+				{
 					double sum = 0;
-					foreach (var word2 in words) {
-						sum += LevenshteinDistance(word, word2);
+					foreach (var word2 in words)
+					{
+						sum += EditDistance(word, word2);
 					}
-					double avg = sum / (words.Count-1);
-					if (avg < best_avg) {
+					double avg = sum / (words.Count - 1);
+					if (avg < best_avg)
+					{
 						best_avg = avg;
 						best_word = word;
 					}
 				}
 				
+				//return words.First();
 				return best_word;
 			}
 			
-			public bool isInHood (string word)
+			public bool isInHood(string word)
 			{
-				foreach (var hood_word in words) {
-					if (IsReplacement(word, hood_word)) {
+				foreach (var hood_word in words)
+				{
+					if (IsReplacement(word, hood_word))
+					{
 						return true;
 					}
 				}
@@ -49,32 +56,37 @@ namespace ML_3
 			}
 		}
 		
-		internal static List<string> BuildLevenList (IEnumerable<InEntry> data)
+		internal static List<string> BuildLevenList(IEnumerable<InEntry> data)
 		{
-			var allwords = data.SelectMany (x => x.Text.ToLower ().Split (' '));
-			var top100Words = allwords.GroupBy (s => s).OrderByDescending (s => s.Count ()).Where (s => s.Key.Length > 4).Take (500);
-			var t1000 = top100Words.Select (g => new { Word = g.Key, Count = g.Count () }).ToList ();
-			List<string> filteredTopWords = new List<string> (200);
+			var allwords = data.SelectMany(x => x.Text.ToLower().Split(' '));
+			var top100Words = allwords.GroupBy(s => s).OrderByDescending(s => s.Count()).Where(s => s.Key.Length > 4).Take(400);
+			var t1000 = top100Words.Select(g => new { Word = g.Key, Count = g.Count() }).ToList();
+			List<string> filteredTopWords = new List<string>(200);
 			
-			List<Hood> hoods = new List<Hood> ();
+			List<Hood> hoods = new List<Hood>();
 			
-			foreach (var word in t1000) {
+			foreach (var word in t1000)
+			{
 				bool hood_found = false;
-				foreach (var hood in hoods) {
-					hood_found = hood.isInHood (word.Word);
-					if (hood_found) {
-						hood.words.Add (word.Word);
+				foreach (var hood in hoods)
+				{
+					hood_found = hood.isInHood(word.Word);
+					if (hood_found)
+					{
+						hood.words.Add(word.Word);
 						break;
 					}
 				}
 				
-				if (!hood_found) {
-					hoods.Add (new Hood (word.Word));
+				if (!hood_found)
+				{
+					hoods.Add(new Hood(word.Word));
 				}
 			}
 			
-			foreach (var hood in hoods) {
-				filteredTopWords.Add (hood.getAverageWord());
+			foreach (var hood in hoods)
+			{
+				filteredTopWords.Add(hood.getAverageWord());
 			}
 			
 			return filteredTopWords;
@@ -83,9 +95,9 @@ namespace ML_3
 		private static bool IsReplacement(string w1, string w2)
 		{
 			var len = Math.Max(w1.Length, w2.Length);
-			var levenshteinDistance = LevenshteinDistance(w1, w2);
+			var levenshteinDistance = EditDistance(w1, w2);
 			var percentage = (1.0 - (levenshteinDistance / (double)len));
-			return percentage >= 0.7;
+			return percentage >= 0.75;
 		}
 		
 		internal static IEnumerable<InEntry> Filter(IEnumerable<InEntry> data, List<string> filteredTopWords)
