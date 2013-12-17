@@ -26,12 +26,12 @@ namespace ML_3
 
         internal static IEnumerable<InEntry> Filter(IEnumerable<InEntry> data, List<string> filteredTopWords)
         {
-            
 
-           // return data;
+
+            // return data;
             foreach (var item in data)
             {
-                item.Text = item.Text.ToLower().Replace("\"","");
+                item.Text = item.Text.ToLower().Replace("\"", "$");
                 item.Text = item.Text.Split(' ')
                     .Select(w => filteredTopWords.Find(q => LevenshteinDistance(q, w) <= 1) ?? w) // look if word W can be replaced by a top word, if not return the original word W
                     .Aggregate((x, y) => x + " " + y);
@@ -43,11 +43,11 @@ namespace ML_3
         {
             return data.OrderBy(e => e.Plz).ToList();
             //return data.Take(100);
-          //  return data.GroupBy(d => d.Plz).Take(10).SelectMany(g => g);
+            //  return data.GroupBy(d => d.Plz).Take(10).SelectMany(g => g);
         }
 
 
-     public   static int LevenshteinDistance(string s, string t)
+        public static int LevenshteinDistance(string s, string t)
         {
             int[,] d = new int[s.Length + 1, t.Length + 1];
             for (int i = 0; i <= s.Length; i++)
