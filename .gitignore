@@ -8,3 +8,4 @@ report.out
 ~$validation_errors.xlsx
 code/2_svm/svmtrain2.asv
 code/2_svm/preprocess.asv
+.DS_Store
