@@ -26,19 +26,24 @@ namespace ML_3
                     string[] fields = parser.ReadFields();
                     if (fields.Length == 1)
                     {
-                        yield return new InEntry() { Text = fields[0] };
+                        yield return new InEntry() { Text = ConvertField0(fields[0]) };
                     }
                     else
                     {
                         yield return new InEntry()
                         {
-                            Text = fields[0],
+                            Text = ConvertField0(fields[0]),
                             Plz = int.Parse(fields[1]),
                             Country = int.Parse(fields[2]),
                         };
                     }
                 }
             }
+        }
+
+        private static string ConvertField0(string field)
+        {
+            return field.Split(' ').Select(x => x).Aggregate((x, y) => x + " " + y);
         }
 
         public static void WriteYMatix(IEnumerable<InEntry> data, string outPath)

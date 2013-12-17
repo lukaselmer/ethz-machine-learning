@@ -8,3 +8,8 @@ report.out
 ~$validation_errors.xlsx
 code/2_svm/svmtrain2.asv
 code/2_svm/preprocess.asv
+.DS_Store
+code/3_map/preprocessing/external_tools/ML-3/ML-3.sln.DotSettings
+code/3_map/preprocessing/external_tools/ML-3/obj/Debug/
+code/3_map/preprocessing/external_tools/ML-3/bin/
+code/3_map/preprocessing/external_tools/ML-3/obj
