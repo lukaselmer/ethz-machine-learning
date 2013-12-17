@@ -29,7 +29,7 @@ namespace ML_3
             var len = Math.Max(w1.Length, w2.Length);
             var levenshteinDistance = LevenshteinDistance(w1, w2);
             var percentage = (1.0 - (levenshteinDistance / (double)len));
-            return percentage >= 0.8;
+            return percentage >= 0.7;
         }
 
         internal static IEnumerable<InEntry> Filter(IEnumerable<InEntry> data, List<string> filteredTopWords)
