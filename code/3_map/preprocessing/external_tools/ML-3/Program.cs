@@ -12,11 +12,13 @@ namespace ML_3
     {
         static void Main(string[] args)
         {
-       //     Console.WriteLine(Preprocessor.LevenshteinDistance("ckjyjljnehbycrbv", "ckjyjljnthbycrbv"));
+            //     Console.WriteLine(Preprocessor.LevenshteinDistance("ckjyjljnehbycrbv", "ckjyjljnthbycrbv"));
 
             var wp = new WordPrinter();
 
-            var data = Helper.ReadFile("../../../../../../../data/3/corrected_training_fixed.csv");
+            //var data = Helper.ReadFile("../../../../../../../data/3/corrected_training_fixed.csv");
+            // _fixed makes it worse...
+            var data = Helper.ReadFile("../../../../../../../data/3/corrected_training.csv");
             var levenList = Preprocessor.BuildLevenList(data);
             data = Preprocessor.Filter(data, levenList);
 
@@ -26,7 +28,7 @@ namespace ML_3
             Helper.WriteYMatix(data, "../../../../Y_training.txt");
             Helper.WriteClassesMatix(data, "../../../../classes.txt");
             Helper.WriteOverride(data, "../../../../override_training.txt");
-           // return;
+            // return;
             data = Helper.ReadFile("../../../../../../../data/3/corrected_validation.csv");
             data = Preprocessor.Filter(data, levenList);
             Helper.WriteXMatrix(data, wordList, "../../../../X_validation.txt");
@@ -38,12 +40,5 @@ namespace ML_3
             Helper.WriteOverride(data, "../../../../override_testing.txt");
         }
 
-    }
-
-    class InEntry
-    {
-        public string Text { get; set; }
-        public int Plz { get; set; }
-        public int Country { get; set; }
     }
 }

@@ -43,7 +43,7 @@ namespace ML_3
 
         private static string ConvertField0(string field)
         {
-            return field.Split(' ').Select(x => x).Aggregate((x, y) => x + " " + y);
+            return field.Split(' ').Select(x => x).Aggregate((x, y) => x + " " + y).ToLower().Replace("\"", "$");
         }
 
         public static void WriteYMatix(IEnumerable<InEntry> data, string outPath)
