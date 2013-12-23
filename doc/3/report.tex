@@ -2,6 +2,8 @@
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage[pdftex]{hyperref}
+\usepackage[a4paper]{geometry}
+\usepackage{hyperref}
 
 % Lengths and indenting
 \setlength{\textwidth}{16.5cm}
@@ -30,6 +32,15 @@ Download the csv files to /data/3/....csv (... = training, testing, validation)\
 Run map.m \\
 Results are in /data/3/....out (... = training, testing, validation)
 
+
+
+
+
+
+
+
+
+
 \section{Tools}
 We used .NET to do the pre-processing (Create word bag, assign entries to word list, fix input data, etc) and Mathlab to do the classification.
 
@@ -41,13 +52,26 @@ We used .NET to do the pre-processing (Create word bag, assign entries to word l
     % item \href{https://github.com/lukaselmer/ethz-machine-learning/releases/tag/best\_v3}{Final solution} \footnote{https://github.com/lukaselmer/ethz-machine-learning/releases/tag/best\_v3} (tag best\_v3, master branch, code attached in the zip file) 
   %\end{itemize}
 \end{itemize}
+\begin{itemize}
+\item C\#, LINQ, Visual Studio 2012 Ultimate (code is in /code/ directory)
+\item Matlab (code is in /code/ directory)
+\item Git / \href{https://github.com/lukaselmer/ethz-machine-learning}{Github Repository} \footnote{https://github.com/lukaselmer/ethz-machine-learning}
+  %\begin{itemize}
+    % item \href{https://github.com/lukaselmer/ethz-machine-learning/releases/tag/best\_v3}{Final solution} \footnote{https://github.com/lukaselmer/ethz-machine-learning/releases/tag/best\_v3} (tag best\_v3, master branch, code attached in the zip file) 
+  %\end{itemize}
+\end{itemize}
 
 \section{Algorithm}
-To classify the data we used the maximum a posteriori probability (MAP) estimate method  presented in the tutorial session in week 49. We implemented the algorithm for mulinomial distribution for a flexible number of k.
-The MAP is implemented in Matlab.
+
+Principal component analysis
+
+Describe the algorithm you used for classification.
 
 \section{Features}
+To group similar words together, reprocessing was used. First, we used the Levinsthein distance\footnote{https://en.wikipedia.org/wiki/Levenshtein\_distance}, but then switched to a slightly modified version of the edit distance\footnote{https://en.wikipedia.org/wiki/Edit\_distance}, which gave slightly better results. Also, instead of using an absolute value threshold for the distance, we used a ratio of about 75\% to group similar words together. For this preprocessing, we used C\#, because string handling in C\# seemed much easier than in Matlab.\\
 In our implementation, the pre-processing step consists of the preparation of the input data, the selection of the words to put in the \textit{bag of words} of the MAP and the mapping of the input data to a mapping to the selected words. 
+
+After the preprocessing, we then used Matlab to predict the city codes and country codes. For this, we used PCA.
 
 To prepare the data, we got a list of the top 400 words in the entire training set and we replaced every other word that is similar enough to one of this top word. The similarity is calculated by the edit distance of two words divided by the length of the longer of the two words. Two words are considered similar if the similarity is greater than 0.75.
 
@@ -58,11 +82,10 @@ To be usable for the MAP algorithm, each data entry is then mapped to a vector $
 The pre-processing was implemented in C\#.
 
 \section{Parameters}
+To find the parameters, we used manual testing. The most important feature seemed to be the edit distance ratio, which is 75\%. Another important parameter is the amount of top words which are picked at the start of the algorithm. These are the words, which are in a category of it's own before grouping them together.
 The MAP algorithm has one parameter $\alpha$: $\alpha_i \in \lbrace1, k \rbrace = 1.01$
 
-
-
-\section{Lessons Learned} What other algorithms did you try out that didn't work well?
-Why do you think they performed worse than what you used for your final submission?
+\section{Lessons Learned}
+Many other tools and algorithms have been tried. However, one we didn't try and might have worked well is SVM.
 
 \end{document} 
