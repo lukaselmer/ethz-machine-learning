@@ -2,6 +2,8 @@
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage[pdftex]{hyperref}
+\usepackage[a4paper]{geometry}
+\usepackage{hyperref}
 
 % Lengths and indenting
 \setlength{\textwidth}{16.5cm}
@@ -18,34 +20,53 @@
 \renewcommand{\familydefault}{\sfdefault}
 
 \title{Machine Learning 2013: Project 3 - Text Classification Report}
-\author{member1@student.ethz.ch\\ member2@student.ethz.ch\\ member3@student.ethz.ch\\}
+\author{anufer@student.ethz.ch\\ elmerl@student.ethz.ch\\ nivo@student.ethz.ch\\}
 \date{\today}
 
 \begin{document}
 \maketitle
 
 \section*{Experimental Protocol}
-Suppose that someone wants to reproduce your results. Briefly describe the steps used to obtain the
-predictions starting from the raw data set downloaded from the project website. Use the following
-sections to explain your methodology. Feel free to add graphs or screenshots if you think it's
-necessary. The report should contain a maximum of 2 pages.
+Usage:\\
+Download the csv files to /data/3/....csv (... = training, testing, validation)\\
+Run map.m \\
+Results are in /data/3/....out (... = training, testing, validation)
+
+
+
+
+
+
+
+
+
 
 \section{Tools}
-Which tools and libraries have you used (e.g. Matlab, Python with scikit-learn, Java with Weka,
-SPSS, language x with library y, $\ldots$). If you have source-code (Matlab scripts, Python scripts, Java source folder, \dots),
-make sure to submit it on the project website together with this report. If you only used
-command-line or GUI-tools describe what you did.
+
+\begin{itemize}
+\item C\#, LINQ, Visual Studio 2012 Ultimate (code is in /code/ directory)
+\item Matlab (code is in /code/ directory)
+\item Git / \href{https://github.com/lukaselmer/ethz-machine-learning}{Github Repository} \footnote{https://github.com/lukaselmer/ethz-machine-learning}
+  %\begin{itemize}
+    % item \href{https://github.com/lukaselmer/ethz-machine-learning/releases/tag/best\_v3}{Final solution} \footnote{https://github.com/lukaselmer/ethz-machine-learning/releases/tag/best\_v3} (tag best\_v3, master branch, code attached in the zip file) 
+  %\end{itemize}
+\end{itemize}
 
 \section{Algorithm}
+
+Principal component analysis
+
 Describe the algorithm you used for classification.
 
 \section{Features}
-Did you perform any preprocessing on the features? What feature transforms did you use?
+To group similar words together, reprocessing was used. First, we used the Levinsthein distance\footnote{https://en.wikipedia.org/wiki/Levenshtein\_distance}, but then switched to a slightly modified version of the edit distance\footnote{https://en.wikipedia.org/wiki/Edit\_distance}, which gave slightly better results. Also, instead of using an absolute value threshold for the distance, we used a ratio of about 75\% to group similar words together. For this preprocessing, we used C\#, because string handling in C\# seemed much easier than in Matlab.\\
+
+After the preprocessing, we then used Matlab to predict the city codes and country codes. For this, we used PCA.
 
 \section{Parameters}
-How did you find the parameters of your model? (What parameters have you searched over, cross validation procedure, $\ldots$)
+To find the parameters, we used manual testing. The most important feature seemed to be the edit distance ratio, which is 75\%. Another important parameter is the amount of top words which are picked at the start of the algorithm. These are the words, which are in a category of it's own before grouping them together.
 
-\section{Lessons Learned} What other algorithms did you try out that didn't work well?
-Why do you think they performed worse than what you used for your final submission?
+\section{Lessons Learned}
+Many other tools and algorithms have been tried. However, one we didn't try and might have worked well is SVM.
 
 \end{document} 
